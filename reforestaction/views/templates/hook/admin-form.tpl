@@ -1,4 +1,4 @@
-<form action="{$module_link}" method="POST" class="form-horizontal" role="form">
+<form action="{$module_link|escape:'htmlall'}" method="POST" class="form-horizontal" role="form">
 	<div class="form-group">
 		<label for="company_name" class="control-label col-lg-3">
 			{l s='Company name:' mod='reforestaction'}

@@ -1,31 +1,18 @@
 <?php 
 
-if( !defined ('_PS_VERSION_') )
+if (!defined('_PS_VERSION_'))
 	exit;
 
 /* Import models */
 $classes = scandir(dirname(__FILE__).'/classes');
 foreach ($classes as $class)
 {
-	if(is_file(dirname(__FILE__).'/classes/'.$class))
+	if (is_file(dirname(__FILE__).'/classes/'.$class))
 	{
-		$class_name = substr($class, 0, -4);
+		$class_name = Tools::substr($class, 0, -4);
 		//Check if class_name is an existing Class or not
-		if(!class_exists($class_name) && $class_name != 'index')
+		if (!class_exists($class_name) && $class_name != 'index')
 			require_once(dirname(__FILE__).'/classes/'.$class_name.'.php');
-	}
-}
-
-/* Import helpers */
-$classes = scandir(dirname(__FILE__).'/classes/helper');
-foreach ($classes as $class)
-{
-	if(is_file(dirname(__FILE__).'/classes/helper/'.$class))
-	{
-		$class_name = substr($class, 0, -4);
-		//Check if class_name is an existing Class or not
-		if(!class_exists($class_name) && $class_name != 'index')
-			require_once(dirname(__FILE__).'/classes/helper/'.$class_name.'.php');
 	}
 }
 
@@ -53,16 +40,15 @@ class ReforestAction extends Module
 	 */
 	public function __construct()
 	{
-
 		$this->name = 'reforestaction';
-		$this->tab = 'other_modules';
+		$this->tab = 'other';
 		$this->version = '0.0.1';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
 
 		$this->displayName = $this->l('Reforest Action');
-		// $this->description = $this->l('');
+		$this->description = $this->l('Reforest action');
 
 		// Check upgrade if enabled and installed
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
@@ -101,7 +87,7 @@ class ReforestAction extends Module
 	public function upgrade()
 	{
 		// Configuration name
-		$cfgName = strtoupper($this->name.'_version');
+		$cfgName = Tools::strtoupper($this->name.'_version');
 		// Get latest version upgraded
 		$version = Configuration::getGlobalValue($cfgName);
 		// If the first time OR the latest version upgrade is older than this one
@@ -118,7 +104,6 @@ class ReforestAction extends Module
 	 */
 	public function uninstall()
 	{
-
 		// Uninstall DataBase
 		if (!$this->uninstallSQL())
 			return false;
@@ -146,13 +131,13 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if(is_file(dirname(__FILE__).'/classes/'.$class))
+			if (is_file(dirname(__FILE__).'/classes/'.$class))
 			{
-				$class_name = substr($class, 0, -4);
+				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if(class_exists($class_name))
+				if (class_exists($class_name))
 				{
-					if(method_exists($class_name, 'install'))
+					if (method_exists($class_name, 'install'))
 						call_user_func(array($class_name, 'install'));
 				}
 			}
@@ -173,13 +158,13 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if(is_file(dirname(__FILE__).'/classes/'.$class))
+			if (is_file(dirname(__FILE__).'/classes/'.$class))
 			{
-				$class_name = substr($class, 0, -4);
+				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if(class_exists($class_name))
+				if (class_exists($class_name))
 				{
-					if(method_exists($class_name, 'uninstall'))
+					if (method_exists($class_name, 'uninstall'))
 						call_user_func(array($class_name, 'uninstall'));
 				}
 			}
@@ -207,6 +192,8 @@ class ReforestAction extends Module
 			'actionOrderHistoryAddAfter'
 		);
 
+		$nb_hooks = count($hooks);
+
 		$result = true;
 		$i = 0;
 
@@ -217,7 +204,7 @@ class ReforestAction extends Module
 
 			$i++;
 		}
-		while ($result == true && $i < count($hooks));
+		while ($result == true && $i < $nb_hooks);
 		
 		return $result;
 	}
@@ -293,7 +280,7 @@ class ReforestAction extends Module
 				$find['cart_quantity'] = 1;
 				$find['total'] = $product->getPrice();
 				$find['price_wt'] = $find['total'];
-				$find['rate'] = $product->getTaxesRate();;
+				$find['rate'] = $product->getTaxesRate();
 				// Add in cart
 				$cart->updateQty($find['cart_quantity'], $id_product);
 			}
@@ -368,9 +355,9 @@ class ReforestAction extends Module
 		$this->context->smarty->assign('form_content', $form_content);
 
 		if (version_compare(_PS_VERSION_, '1.6', '<'))
-			$return =  $this->display(__FILE__, 'admin.tpl');
+			$return = $this->display(__FILE__, 'admin.tpl');
 		else
-			$return =  $this->display(__FILE__, 'admin_16.tpl');
+			$return = $this->display(__FILE__, 'admin_16.tpl');
 
 		return $return;
 	}
@@ -395,9 +382,7 @@ class ReforestAction extends Module
 				|| !Tools::getValue('firstname')
 				|| !Tools::getValue('lastname')
 				|| !Tools::getValue('email'))
-			{
 				$this->context->controller->errors[] = $this->l('All fields are required.');
-			}
 			else
 			{
 				$current_status = Configuration::get('RA_MERCHANT_STATUS');
@@ -408,10 +393,10 @@ class ReforestAction extends Module
 					return;
 				}
 
-				Configuration::updateValue('RA_MERCHANT_EMAIL',     Tools::getValue('email'));
+				Configuration::updateValue('RA_MERCHANT_EMAIL', Tools::getValue('email'));
 				Configuration::updateValue('RA_MERCHANT_FIRSTNAME', Tools::getValue('firstname'));
-				Configuration::updateValue('RA_MERCHANT_LASTNAME',  Tools::getValue('lastname'));
-				Configuration::updateValue('RA_EVERY_HOUR',         12); // In hours
+				Configuration::updateValue('RA_MERCHANT_LASTNAME', Tools::getValue('lastname'));
+				Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
 
 				$this->initCall();
 
@@ -611,7 +596,7 @@ class ReforestAction extends Module
 		{
 
 			$reforestaction->sent = true;
-			$reforestaction->date_sent = strftime("%Y-%m-%d %H:%M:%S");
+			$reforestaction->date_sent = strftime('%Y-%m-%d %H:%M:%S');
 
 			$customer = new Customer((int)$order->id_customer);
 
@@ -657,7 +642,8 @@ class ReforestAction extends Module
 	 */
 	private function translateError($error, $order = false)
 	{
-		switch ($error) {
+		switch ($error) 
+		{
 			case 'ALREADY_EXISTS':
 				if (!$order)
 					$message = $this->l('This email already exists.');

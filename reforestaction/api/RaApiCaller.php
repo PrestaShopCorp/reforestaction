@@ -96,7 +96,6 @@ class RaApiCaller extends ApiCaller
 	 */
 	protected function makeCall($body = null, $http_header = null, $user = null, $passwd = null)
 	{
-
 		if (is_null($http_header) || !is_array($http_header))
 			$http_header = array($http_header);
 

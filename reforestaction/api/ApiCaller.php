@@ -94,7 +94,7 @@ abstract class ApiCaller
 
 		if ($this->_response != false)
 			$this->_response = Tools::jsonDecode($this->_response);
-		
+
 		$this->_logs[] = '======================================================================================================';
 
 
@@ -210,7 +210,7 @@ abstract class ApiCaller
 				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send successfull');
 		}
 		else
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with fsockopen').' '.$errmsg	;
+			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with fsockopen').' '.$errmsg;
 
 		return $tmp;
 	}
@@ -249,11 +249,10 @@ abstract class ApiCaller
 
 	final protected function writeLog()
 	{
-
 		if (!$this->debug)
 			return false;
 
-		$handle = fopen(dirname(__FILE__) . '/../log.txt', 'a+');
+		$handle = fopen(dirname(__FILE__).'/../log.txt', 'a+');
 
 		foreach ($this->getLogs() as $value)
 			fwrite($handle, $value."\r");
