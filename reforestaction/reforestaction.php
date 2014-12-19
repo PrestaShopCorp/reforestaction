@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 * 2007-2014 PrestaShop
 *
 * NOTICE OF LICENSE
@@ -18,27 +18,14 @@
 * versions in the future. If you wish to customize PrestaShop for your
 * needs please refer to http://www.prestashop.com for more information.
 *
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*  @author    PrestaShop SA <contact@prestashop.com>
+*  @copyright 2007-2014 PrestaShop SA
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
 if (!defined('_PS_VERSION_'))
 	exit;
-
-/* Import models */
-$classes = scandir(dirname(__FILE__).'/classes');
-foreach ($classes as $class)
-{
-	if (is_file(dirname(__FILE__).'/classes/'.$class))
-	{
-		$class_name = Tools::substr($class, 0, -4);
-		/** Check if class_name is an existing Class or not */
-		if (!class_exists($class_name) && $class_name != 'index')
-			require_once(dirname(__FILE__).'/classes/'.$class_name.'.php');
-	}
-}
 
 class ReforestAction extends Module
 {
@@ -57,7 +44,7 @@ class ReforestAction extends Module
 	 * Api Call
 	 * @var ApiCaller
 	 */
-	private $call;
+	public $call;
 
 	/**
 	 * Constructor of module
@@ -74,10 +61,42 @@ class ReforestAction extends Module
 		$this->displayName = $this->l('Reforest Action');
 		$this->description = $this->l('Reforest action');
 
+		$this->includeFiles();
+
 		// Check upgrade if enabled and installed
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
 			$this->upgrade();
 
+	}
+
+	private function includeFiles()
+	{
+		$path = $this->getLocalPath().'classes/';
+		/* Import models */
+		foreach (scandir($path) as $class)
+		{
+			if(is_file($path.$class))
+			{
+				$class_name = substr($class, 0, -4);
+				//Check if class_name is an existing Class or not
+				if(!class_exists($class_name) && $class_name != 'index')
+					require_once($path.$class_name.'.php');
+			}
+		}
+
+		$path .= 'helper/';
+
+		/* Import helpers */
+		foreach (scandir($path) as $class)
+		{
+			if(is_file($path.$class))
+			{
+				$class_name = substr($class, 0, -4);
+				//Check if class_name is an existing Class or not
+				if(!class_exists($class_name) && $class_name != 'index')
+					require_once($path.$class_name.'.php');
+			}
+		}
 	}
 
 	############################################################################################################
@@ -98,9 +117,15 @@ class ReforestAction extends Module
 		if (!$this->installSQL())
 			return false;
 
+		// Install tabs
+		if(!$this->installTabs())
+			return false;
+
 		// Registration hook
 		if (!$this->registrationHook())
 			return false;
+
+		Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
 
 		return true;
 	}
@@ -132,11 +157,53 @@ class ReforestAction extends Module
 		if (!$this->uninstallSQL())
 			return false;
 
+		// Delete tabs
+		if(!$this->uninstallTabs())
+			return false;
+
 		// Uninstall default
 		if (!parent::uninstall())
 			return false;
 
 		return true;
+	}
+
+
+	/**
+	 * Initialisation to install / uninstall
+	 */
+	private function installTabs() 
+	{
+		$result = true;
+
+		$menu_id = -1;
+		
+		$controllers = scandir(dirname(__FILE__).'/controllers/admin');
+		foreach ($controllers as $controller)
+		{
+			if(is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
+			{
+				require_once(dirname(__FILE__).'/controllers/admin/'.$controller);
+				$controller_name = substr($controller, 0, -4);
+				if(class_exists($controller_name))
+				{
+					if(method_exists($controller_name, 'install'))
+						$result &= call_user_func(array($controller_name, 'install'), $menu_id, $this->name);
+				}
+			}
+		}
+
+		return $result;
+
+	}
+
+	/**
+	 * Delete tab
+	 * @return  boolean if successfull
+	 */
+	public function uninstallTabs()
+	{
+		return reforestactionTotAdminTabHelper::deleteAdminTabs($this->name);
 	}
 
 	############################################################################################################
@@ -349,123 +416,7 @@ class ReforestAction extends Module
 	 */
 	public function getContent()
 	{
-		// Activate bootstrap
-		$this->bootstrap = true;
-
-		// Suffix to link
-		$suffix_link = '&configure='.$this->name.'&token='.Tools::getValue('token').'&tab_module='.$this->tab.'&module_name='.$this->name;
-
-		// Base
-		if (version_compare(_PS_VERSION_, '1.5', '>'))
-			$this->link_module = 'index.php?controller='.Tools::getValue('controller').$suffix_link;
-		else
-			$this->link_module = 'index.php?tab='.Tools::getValue('tab').$suffix_link;
-
-		$this->postProcess();
-
-		$current_status = Configuration::get('RA_MERCHANT_STATUS');
-
-		// Assigns
-		$datas = array(
-			'modulelink_module'     => $this->link_module,
-			'merchant_status' => $current_status,
-		);
-
-		if ($current_status)
-		{
-			if ($current_status == ReforestAction::ACCOUNT_WAITING)
-				$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
-			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-				$this->context->controller->errors[] = $this->l('Your account has been banned.');
-		}
-
-		$this->context->smarty->assign($datas);
-		// Form contnet
-		$form_content = $this->display(__FILE__, 'admin-form.tpl');
-		// Assign form content
-		$this->context->smarty->assign('form_content', $form_content);
-
-		if (version_compare(_PS_VERSION_, '1.6', '<'))
-			$return = $this->display(__FILE__, 'admin.tpl');
-		else
-			$return = $this->display(__FILE__, 'admin_16.tpl');
-
-		return $return;
-	}
-
-	/**
-	 * Processing post in BO
-	 */
-	public function postProcess()
-	{
-		$this->checkStatus();
-		$this->createRaProduct();
-
-		// check if form has been sent
-		if (Tools::isSubmit('btnSubmit'))
-		{
-			// Check if all field is not empty
-			if (!Tools::getValue('company_name')
-				|| !Tools::getValue('phone')
-				|| !Tools::getValue('address')
-				|| !Tools::getValue('industry')
-				|| !Tools::getValue('transaction')
-				|| !Tools::getValue('firstname')
-				|| !Tools::getValue('lastname')
-				|| !Tools::getValue('email'))
-				$this->context->controller->errors[] = $this->l('All fields are required.');
-			else
-			{
-				$current_status = Configuration::get('RA_MERCHANT_STATUS');
-
-				if ($current_status != false)
-				{
-					$this->context->controller->errors[] = $this->l('This informations are already saved.');
-					return;
-				}
-
-				Configuration::updateValue('RA_MERCHANT_EMAIL', Tools::getValue('email'));
-				Configuration::updateValue('RA_MERCHANT_FIRSTNAME', Tools::getValue('firstname'));
-				Configuration::updateValue('RA_MERCHANT_LASTNAME', Tools::getValue('lastname'));
-				Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
-
-				$this->initCall();
-
-				$datas = array(
-					'firstname'      => Tools::getValue('firstname'),
-					'lastname'       => Tools::getValue('lastname'),
-					'email'          => Tools::getValue('email'),
-					'ps_version'     => _PS_VERSION_,
-					'module_version' => $this->version,
-					'company'        => Tools::getValue('company_name'),
-					'phone'          => Tools::getValue('phone'),
-					'address'        => Tools::getValue('address'),
-					'industry'       => Tools::getValue('industry'),
-					'transaction'    => Tools::getValue('transaction'),
-					'shop_uri'       => $this->context->shop->getBaseURL(),
-					'random'         => rand(1, 100), // TODO : delete
-				);
-
-				$result = $this->call->createAccount($datas);
-
-				// If create account successfull
-				if ($result->error == false)
-				{
-					Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_WAITING);
-					Configuration::updateValue('RA_MERCHANT_ID', $result->id_merchant);
-					Configuration::updateValue('RA_MERCHANT_KEY', $result->merchant_key);
-
-					$this->checkStatus();
-
-					Tools::redirectAdmin($this->link_module.'&conf=3');
-				}
-				else
-				{
-					$this->context->controller->errors[] = $this->translateError($result->message);
-					return;
-				}
-			}
-		}
+		Tools::redirectAdmin($this->context->link->getAdminLink('AdminReforestAction'));
 	}
 
 	############################################################################################################
@@ -475,12 +426,12 @@ class ReforestAction extends Module
 	/**
 	 * Init call
 	 */
-	private function initCall()
+	public function initCall()
 	{
-		if (!$this->_call instanceof ApiCaller)
+		if (!$this->call instanceof ApiCaller)
 		{
 			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->_call = new RaApiCaller('http://localhost/reforestaction/', $this);
+			$this->call = new RaApiCaller('http://localhost/reforestaction/', $this);
 		}
 	}
 
@@ -489,6 +440,9 @@ class ReforestAction extends Module
 	 */
 	private function accountIsActive()
 	{
+		if (!Configuration::get('RA_MERCHANT_KEY'))
+			return false;
+
 		$account_type = (int)Configuration::get('RA_MERCHANT_STATUS');
 
 		return $account_type != ReforestAction::ACCOUNT_OK;
@@ -498,7 +452,7 @@ class ReforestAction extends Module
 	 * Create Reforest Action product
 	 * @return int Created ID
 	 */
-	private function createRaProduct()
+	public function createRaProduct()
 	{
 		if (!$this->accountIsActive())
 			return;
@@ -548,8 +502,11 @@ class ReforestAction extends Module
 	/**
 	 * Check merchant status
 	 */
-	private function checkStatus()
+	public function checkStatus()
 	{
+		if (!Configuration::get('RA_MERCHANT_KEY'))
+			return false;
+
 		$current_time = time();
 		$last_check = Configuration::get('RA_LAST_CHECK');
 
@@ -558,7 +515,7 @@ class ReforestAction extends Module
 
 		// if status never check or too old
 		if ($last_check == false || (($current_time - $last_check) > $duration))
-		{
+		{	
 			$this->initCall();
 			$result = $this->call->getStatus();
 			$current_status = Configuration::get('RA_MERCHANT_STATUS');
@@ -669,7 +626,7 @@ class ReforestAction extends Module
 	 * @param  string $error Error code
 	 * @return string        Error message
 	 */
-	private function translateError($error, $order = false)
+	public function translateError($error, $order = false)
 	{
 		switch ($error)
 		{
@@ -706,6 +663,90 @@ class ReforestAction extends Module
 		}
 
 		return $message;
+	}
+
+	/**
+	 * Get industries
+	 * @return array industries
+	 */
+	public function getIndustries()
+	{
+		$industries = array(
+			array(
+				'key' => 1,
+				'name' => $this->l('House, decoration'),
+			),
+			array(
+				'key' => 2,
+				'name' => $this->l('Cosmetics'),
+			),
+			array(
+				'key' => 3,
+				'name' => $this->l('Shoes, accessories'),
+			),
+			array(
+				'key' => 4,
+				'name' => $this->l('Childrens'),
+			),
+			array(
+				'key' => 5,
+				'name' => $this->l('Food, drinks'),
+			),
+			array(
+				'key' => 6,
+				'name' => $this->l('Clothing'),
+			),
+			array(
+				'key' => 7,
+				'name' => $this->l('Sport'),
+			),
+			array(
+				'key' => 8,
+				'name' => $this->l('Technology'),
+			),
+			array(
+				'key' => 9,
+				'name' => $this->l('Entertainment'),
+			),
+			array(
+				'key' => 10,
+				'name' => $this->l('Others'),
+			),
+		);
+
+		return $industries;
+	}
+
+	/**
+	 * Get transations
+	 * @return array Transactions
+	 */
+	public function getTransactions()
+	{
+		$transactions = array(
+			array(
+				'key' => 1,
+				'name' => $this->l('Less 1 per day')
+			),
+			array(
+				'key' => 2,
+				'name' => $this->l('Between 1 and 5 per day')
+			),
+			array(
+				'key' => 3,
+				'name' => $this->l('Between 5 and 10 per day')
+			),
+			array(
+				'key' => 4,
+				'name' => $this->l('Between 10 and 20 per day')
+			),
+			array(
+				'key' => 5,
+				'name' => $this->l('More 20 per day')
+			),
+		);
+
+		return $transactions;
 	}
 
 }
