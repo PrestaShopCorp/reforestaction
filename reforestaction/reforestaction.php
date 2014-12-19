@@ -219,6 +219,12 @@ class ReforestAction extends Module
 		$this->context->controller->addJqueryPlugin('fancybox');
 	}
 
+
+	public function hookDisplayBackOfficeHeader()
+	{
+		$this->checkStatus();
+	}
+
 	/**
 	 * Add checkbox to carrier page
 	 * @return mixed nothing | Smarty Template
@@ -447,7 +453,11 @@ class ReforestAction extends Module
 	 */
 	private function initCall()
 	{
-		if (!$this->
+		if (!$this->_call instanceof ApiCaller)
+		{
+			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
+			$this->_call = new RaApiCaller('http://localhost/reforestaction/', $this);
+		}
 	}
 
 	/**
