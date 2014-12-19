@@ -113,7 +113,9 @@ class AdminReforestActionController extends ModuleAdminController
 		);
 
 		if (!$disabled)
-			$this->fields_options['settings']['submit'] = array();
+			$this->fields_options['settings']['submit'] = array(
+				'title' => $this->l('Save')
+			);
 
 	}
 
