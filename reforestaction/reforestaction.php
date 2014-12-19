@@ -10,7 +10,7 @@ foreach ($classes as $class)
 	if (is_file(dirname(__FILE__).'/classes/'.$class))
 	{
 		$class_name = Tools::substr($class, 0, -4);
-		//Check if class_name is an existing Class or not
+		// Check if class_name is an existing Class or not
 		if (!class_exists($class_name) && $class_name != 'index')
 			require_once(dirname(__FILE__).'/classes/'.$class_name.'.php');
 	}
@@ -27,13 +27,13 @@ class ReforestAction extends Module
 	 * Module link in BO
 	 * @var String
 	 */
-	private $_link;
+	private $link_module;
 
 	/**
 	 * Api Call
 	 * @var ApiCaller
 	 */
-	private $_call;
+	private $call;
 
 	/**
 	 * Constructor of module
@@ -87,14 +87,14 @@ class ReforestAction extends Module
 	public function upgrade()
 	{
 		// Configuration name
-		$cfgName = Tools::strtoupper($this->name.'_version');
+		$cfg_name = Tools::strtoupper($this->name.'_version');
 		// Get latest version upgraded
-		$version = Configuration::getGlobalValue($cfgName);
+		$version = Configuration::getGlobalValue($cfg_name);
 		// If the first time OR the latest version upgrade is older than this one
 		if ($version === false || version_compare($version, $this->version, '<'))
 		{
 			// Upgrade in DataBase the new version
-			Configuration::updateGlobalValue($cfgName, $this->version);
+			Configuration::updateGlobalValue($cfg_name, $this->version);
 		}
 	}
 
@@ -118,7 +118,7 @@ class ReforestAction extends Module
 	############################################################################################################
 	# SQL
 	############################################################################################################
-	
+
 	/**
 	 * Install DataBase table
 	 * @return boolean if install was successfull
@@ -134,7 +134,7 @@ class ReforestAction extends Module
 			if (is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
-				//Check if class_name is an existing Class or not
+				// Check if class_name is an existing Class or not
 				if (class_exists($class_name))
 				{
 					if (method_exists($class_name, 'install'))
@@ -142,7 +142,7 @@ class ReforestAction extends Module
 				}
 			}
 		}
-	
+
 		return true;
 	}
 
@@ -169,7 +169,7 @@ class ReforestAction extends Module
 				}
 			}
 		}
-	
+
 		return true;
 	}
 
@@ -205,7 +205,7 @@ class ReforestAction extends Module
 			$i++;
 		}
 		while ($result == true && $i < $nb_hooks);
-		
+
 		return $result;
 	}
 
@@ -289,7 +289,8 @@ class ReforestAction extends Module
 			$model->total      = (float)$find_product['total'];
 			$model->qty        = (int)$find['cart_quantity'];
 			$model->price_exc  = (float)$find['price_wt'];
-			$model->price_inc  = (float)($find['price_wt'] / (1 + $find['rate'] / 100));
+			$price_inc         = ($find['price_wt'] / (1 + $find['rate'] / 100));
+			$model->price_inc  = (float)$price_inc;
 			$model->newsletter = Tools::getValue('reforestaction_newsletter');
 
 			$model->save();
@@ -322,13 +323,13 @@ class ReforestAction extends Module
 		$this->bootstrap = true;
 
 		// Suffix to link
-		$suffixLink = '&configure='.$this->name.'&token='.Tools::getValue('token').'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$suffixL_lnk = '&configure='.$this->name.'&token='.Tools::getValue('token').'&tab_module='.$this->tab.'&module_name='.$this->name;
 
 		// Base
 		if (version_compare(_PS_VERSION_, '1.5', '>'))
-			$this->_link = 'index.php?controller='.Tools::getValue('controller').$suffixLink;
+			$this->link_module = 'index.php?controller='.Tools::getValue('controller').$suffixL_lnk;
 		else
-			$this->_link = 'index.php?tab='.Tools::getValue('tab').$suffixLink;
+			$this->link_module = 'index.php?tab='.Tools::getValue('tab').$suffixL_lnk;
 
 		$this->postProcess();
 
@@ -336,7 +337,7 @@ class ReforestAction extends Module
 
 		// Assigns
 		$datas = array(
-			'module_link'     => $this->_link,
+			'modulelink_module'     => $this->link_module,
 			'merchant_status' => $current_status,
 		);
 
@@ -415,26 +416,24 @@ class ReforestAction extends Module
 					'random'         => rand(1, 100), // TODO : delete
 				);
 
-				$result = $this->_call->createAccount($datas);
+				$result = $this->call->createAccount($datas);
 
 				// If create account successfull
 				if ($result->error == false)
 				{
 					Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_WAITING);
-					Configuration::updateValue('RA_MERCHANT_ID',     $result->id_merchant);
-					Configuration::updateValue('RA_MERCHANT_KEY',    $result->merchant_key);
+					Configuration::updateValue('RA_MERCHANT_ID', $result->id_merchant);
+					Configuration::updateValue('RA_MERCHANT_KEY', $result->merchant_key);
 
 					$this->checkStatus();
 
-					Tools::redirectAdmin($this->_link.'&conf=3');
+					Tools::redirectAdmin($this->link_module.'&conf=3');
 				}
 				else
 				{
 					$this->context->controller->errors[] = $this->translateError($result->message);
 					return;
 				}
-
-				// TODO création du produit
 			}
 		}
 	}
@@ -442,19 +441,15 @@ class ReforestAction extends Module
 	############################################################################################################
 	# Methodes
 	############################################################################################################
-	
+
 	/**
 	 * Init call
 	 */
 	private function initCall()
 	{
-		if (!$this->_call instanceof ApiCaller)
-		{
-			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->_call = new RaApiCaller('http://localhost/reforestaction/', $this);
-		}
+		if (!$this->
 	}
-	
+
 	/**
 	 * Check if account is enable
 	 */
@@ -531,7 +526,7 @@ class ReforestAction extends Module
 		if ($last_check == false || (($current_time - $last_check) > $duration))
 		{
 			$this->initCall();
-			$result = $this->_call->getStatus();
+			$result = $this->call->getStatus();
 			$current_status = Configuration::get('RA_MERCHANT_STATUS');
 
 			// if no error
@@ -610,7 +605,7 @@ class ReforestAction extends Module
 			);
 
 			$this->initCall();
-			$result = $this->_call->sendOrder($datas);
+			$result = $this->call->sendOrder($datas);
 
 			if (!isset($result->error))
 				$reforestaction->id_order_reforestaction = $result->id_order;
@@ -642,7 +637,7 @@ class ReforestAction extends Module
 	 */
 	private function translateError($error, $order = false)
 	{
-		switch ($error) 
+		switch ($error)
 		{
 			case 'ALREADY_EXISTS':
 				if (!$order)

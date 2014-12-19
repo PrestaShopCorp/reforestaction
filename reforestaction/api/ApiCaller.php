@@ -27,7 +27,7 @@ abstract class ApiCaller
 	 * Response of call
 	 * @var string
 	 */
-	protected $_response;
+	protected $response;
 
 	/**
 	 * Only POST, GET for the moment
@@ -39,7 +39,7 @@ abstract class ApiCaller
 	 * Logs
 	 * @var array
 	 */
-	protected $_logs = array();
+	protected $logs = array();
 
 	/**
 	 * If debug mod
@@ -75,28 +75,27 @@ abstract class ApiCaller
 		// init uri to call
 		$uri_to_call = $this->host.$this->endpoint;
 
-		$this->_logs[] = '======================================================================================================';
-		$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Making new connection to :').' '.$uri_to_call;
+		$this->logs[] = '======================================================================================================';
+		$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Making new connection to :').' '.$uri_to_call;
 
 		// Init for cURL
 		if (extension_loaded('curl'))
-			$this->_response = $this->connectByCurl($uri_to_call, $http_header, $body, $user, $passwd);
+			$this->response = $this->connectByCurl($uri_to_call, $http_header, $body, $user, $passwd);
 		// Init for fsock
 		else if (function_exists('fsockopen'))
-			$this->_response = $this->connectByFsock($uri_to_call, $http_header, $body, $user, $passwd);
+			$this->response = $this->connectByFsock($uri_to_call, $http_header, $body, $user, $passwd);
 		else
 		{
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Call is not possible, cURL and fsockopen is not enable.');
-			$this->_response = false;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Call is not possible, cURL and fsockopen is not enable.');
+			$this->response = false;
 		}
 
-		$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Response : '.$this->_response;
+		$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Response : '.$this->response;
 
-		if ($this->_response != false)
-			$this->_response = Tools::jsonDecode($this->_response);
+		if ($this->response != false)
+			$this->response = Tools::jsonDecode($this->response);
 
-		$this->_logs[] = '======================================================================================================';
-
+		$this->logs[] = '======================================================================================================';
 
 		if ($this->debug)
 			$this->writeLog();
@@ -115,61 +114,61 @@ abstract class ApiCaller
 
 		if ($ch)
 		{
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect with cURL successfull');
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect with cURL successfull');
 
 			// Connection with user
 			if (!is_null($user))
 			{
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Use identifier to connect:').' '.$user;
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Use identifier to connect:').' '.$user;
 				$connection_string = $user;
 
 				// if use password
 				if (!is_null($passwd))
 				{
-					$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Use password to connect');
+					$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Use password to connect');
 					$connection_string .= ':'.$passwd;
 				}
 
-				@curl_setopt($ch, CURLOPT_USERPWD, $connection_string);
+				curl_setopt($ch, CURLOPT_USERPWD, $connection_string);
 			}
 
 			// use header if necessary
 			if (is_array($http_header) && count($http_header))
 			{
-				@curl_setopt($ch, CURLOPT_HTTPHEADER, $http_header);
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.Tools::jsonEncode($http_header);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $http_header);
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.Tools::jsonEncode($http_header);
 			}
 
 			// if want post
 			if ($this->action == 'POST')
-				@curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POST, true);
 
 			// if body if necessary
 			if ($body)
 			{
-				@curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
 			}
 
-			@curl_setopt($ch, CURLOPT_HEADER, false);
-			@curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			@curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-			@curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-			@curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-			@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-			@curl_setopt($ch, CURLOPT_VERBOSE, false);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($ch, CURLOPT_VERBOSE, false);
 
 			// exec call
 			$result = curl_exec($ch);
 
 			if (!$result)
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send failed');
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send failed');
 			else
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send successfull');
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send successfull');
 		}
 		else
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with cURL');
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with cURL');
 
 		return $result;
 	}
@@ -177,7 +176,7 @@ abstract class ApiCaller
 	/**
 	 * Exec by fsockopen
 	 */
-	private function connectByFsock($uri_to_call, $http_header, $body, $user, $passwd)
+	private function connectByFsock($uri_to_call, $http_header, $body)
 	{
 		// Initialize temporary content
 		$tmp = false;
@@ -187,13 +186,13 @@ abstract class ApiCaller
 
 		if ($handle)
 		{
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect with fsockopen successfull');
-			$headers = $this->_makeHeader(Tools::strlen($body), $http_header);
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect with fsockopen successfull');
+			$headers = $this->makeHeader(Tools::strlen($body), $http_header);
 			// Puts
 			@fwrite($handle, $headers.$body);
 
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.$headers;
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.$headers;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
 
 			// Read lines
 			$tmp = '';
@@ -205,12 +204,12 @@ abstract class ApiCaller
 			@fclose($handle);
 
 			if ($tmp == '')
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send failed');
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send failed');
 			else
-				$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send successfull');
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send successfull');
 		}
 		else
-			$this->_logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with fsockopen').' '.$errmsg;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect failed with fsockopen').' '.$errmsg;
 
 		return $tmp;
 	}
@@ -219,7 +218,7 @@ abstract class ApiCaller
 	 * Make Header
 	 * @return string Header
 	 */
-	private function _makeHeader($body_length, $http_header)
+	private function makeHeader($body_length, $http_header)
 	{
 		$header = 'POST '.(string)$this->endpoint.' HTTP/1.1'."\r\n".
 					'Host: '.(string)$this->host."\r\n".
@@ -244,7 +243,7 @@ abstract class ApiCaller
 	 */
 	final public function getLogs()
 	{
-		return $this->_logs;
+		return $this->logs;
 	}
 
 	final protected function writeLog()
@@ -257,7 +256,7 @@ abstract class ApiCaller
 		foreach ($this->getLogs() as $value)
 			fwrite($handle, $value."\r");
 
-		$this->_logs = array();
+		$this->logs = array();
 
 		fclose($handle);
 	}

@@ -7,7 +7,7 @@ class ReforestActionModel extends ObjectModel
 
 	public static $definition = array(
 		'table'     => 'reforestaction',
-		'primary'   => 'id_reforestaction', 
+		'primary'   => 'id_reforestaction',
 		'multilang' => false,
 		'fields'    => array(
 			'id_cart'                 => array('type' => self::TYPE_INT,   'validate' => 'isInt'),
@@ -50,8 +50,8 @@ class ReforestActionModel extends ObjectModel
 					PRIMARY KEY  ('.self::$definition['primary'].')
 			) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 
-		foreach ($sql as $q) 
-			Db::getInstance()->Execute($q);	
+		foreach ($sql as $q)
+			Db::getInstance()->Execute($q);
 	}
 
 	/**
@@ -63,7 +63,7 @@ class ReforestActionModel extends ObjectModel
 		// Create Category Table in Database
 		$sql[] = 'DROP TABLE IF EXISTS `'._DB_PREFIX_.self::$definition['table'].'`';
 
-		foreach ($sql as $q) 
+		foreach ($sql as $q)
 			Db::getInstance()->Execute($q);
 	}
 
@@ -105,7 +105,7 @@ class ReforestActionModel extends ObjectModel
 
 		$reforestactions = array();
 		foreach ($result as $reforestaction)
-			$reforestactions[] = (int)($reforestaction[self::$definition['primary']]);
+			$reforestactions[] = (int)$reforestaction[self::$definition['primary']];
 
 		return $reforestactions;
 	}

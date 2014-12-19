@@ -50,11 +50,12 @@ class RaApiCaller extends ApiCaller
 	public function getStatus()
 	{
 		$this->verb = 'GET';
-		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/status?merchant_key='.Configuration::get('RA_MERCHANT_KEY').'&rand='.rand(0, 100);
+		$key = Configuration::get('RA_MERCHANT_KEY');
+		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/status?merchant_key='.$key.'&rand='.rand(0, 100);
 
 		$this->makeCall();
 
-		return $this->_response;
+		return $this->response;
 	}
 
 	/**
@@ -69,7 +70,7 @@ class RaApiCaller extends ApiCaller
 
 		$this->makeCall($this->getBody($fields));
 
-		return $this->_response;
+		return $this->response;
 	}
 
 	/**
@@ -84,7 +85,7 @@ class RaApiCaller extends ApiCaller
 
 		$this->makeCall($this->getBody($fields));
 
-		return $this->_response;
+		return $this->response;
 	}
 
 	/**
