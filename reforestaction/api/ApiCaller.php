@@ -1,4 +1,28 @@
 <?php
+/*
+* 2007-2014 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+*  @author PrestaShop SA <contact@prestashop.com>
+*  @copyright  2007-2014 PrestaShop SA
+*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*  International Registered Trademark & Property of PrestaShop SA
+*/
 
 if (!defined('_PS_VERSION_'))
 	exit;
@@ -90,7 +114,7 @@ abstract class ApiCaller
 			$this->response = false;
 		}
 
-		$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Response : '.$this->response;
+		$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : Response : '.$this->response;
 
 		if ($this->response != false)
 			$this->response = Tools::jsonDecode($this->response);
@@ -136,7 +160,7 @@ abstract class ApiCaller
 			if (is_array($http_header) && count($http_header))
 			{
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $http_header);
-				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.Tools::jsonEncode($http_header);
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : Headers : '.Tools::jsonEncode($http_header);
 			}
 
 			// if want post
@@ -147,7 +171,7 @@ abstract class ApiCaller
 			if ($body)
 			{
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
+				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : Body : '.$body;
 			}
 
 			curl_setopt($ch, CURLOPT_HEADER, false);
@@ -182,17 +206,17 @@ abstract class ApiCaller
 		$tmp = false;
 
 		// Open socket
-		$handle = @fsockopen($uri_to_call, -1, $errno, $errmsg);
+		$handle = fsockopen($uri_to_call, -1, $errno, $errmsg);
 
 		if ($handle)
 		{
 			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Connect with fsockopen successfull');
 			$headers = $this->makeHeader(Tools::strlen($body), $http_header);
 			// Puts
-			@fwrite($handle, $headers.$body);
+			fwrite($handle, $headers.$body);
 
-			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Headers : '.$headers;
-			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.'Body : '.$body;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : Headers : '.$headers;
+			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : Body : '.$body;
 
 			// Read lines
 			$tmp = '';
@@ -201,7 +225,7 @@ abstract class ApiCaller
 				$tmp .= trim(fgets($handle, 1024));
 
 			// Close handle
-			@fclose($handle);
+			fclose($handle);
 
 			if ($tmp == '')
 				$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Send failed');

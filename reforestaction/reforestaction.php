@@ -1,4 +1,28 @@
-<?php 
+<?php
+/*
+* 2007-2014 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+*  @author PrestaShop SA <contact@prestashop.com>
+*  @copyright  2007-2014 PrestaShop SA
+*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*  International Registered Trademark & Property of PrestaShop SA
+*/
 
 if (!defined('_PS_VERSION_'))
 	exit;
@@ -10,7 +34,7 @@ foreach ($classes as $class)
 	if (is_file(dirname(__FILE__).'/classes/'.$class))
 	{
 		$class_name = Tools::substr($class, 0, -4);
-		// Check if class_name is an existing Class or not
+		/** Check if class_name is an existing Class or not */
 		if (!class_exists($class_name) && $class_name != 'index')
 			require_once(dirname(__FILE__).'/classes/'.$class_name.'.php');
 	}
@@ -41,7 +65,7 @@ class ReforestAction extends Module
 	public function __construct()
 	{
 		$this->name = 'reforestaction';
-		$this->tab = 'other';
+		$this->tab = 'front_office_features';
 		$this->version = '0.0.1';
 		$this->author = '202-ecommerce';
 
@@ -329,13 +353,13 @@ class ReforestAction extends Module
 		$this->bootstrap = true;
 
 		// Suffix to link
-		$suffixL_lnk = '&configure='.$this->name.'&token='.Tools::getValue('token').'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$suffix_link = '&configure='.$this->name.'&token='.Tools::getValue('token').'&tab_module='.$this->tab.'&module_name='.$this->name;
 
 		// Base
 		if (version_compare(_PS_VERSION_, '1.5', '>'))
-			$this->link_module = 'index.php?controller='.Tools::getValue('controller').$suffixL_lnk;
+			$this->link_module = 'index.php?controller='.Tools::getValue('controller').$suffix_link;
 		else
-			$this->link_module = 'index.php?tab='.Tools::getValue('tab').$suffixL_lnk;
+			$this->link_module = 'index.php?tab='.Tools::getValue('tab').$suffix_link;
 
 		$this->postProcess();
 
