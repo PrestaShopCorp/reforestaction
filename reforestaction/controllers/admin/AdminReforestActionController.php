@@ -127,12 +127,12 @@ class AdminReforestActionController extends ModuleAdminController
 	 */
 	public static function install($menu_id, $module_name)
 	{
-		return reforestactionTotAdminTabHelper::addAdminTab(array(
+		return ReforestactionTotAdminTabHelper::addAdminTab(array(
 			'id_parent'    => $menu_id,
 			'className'    => 'AdminReforestAction',
 			'default_name' => 'Reforest\'Action',
 			'name'         => 'Reforest\'Action',
-			'position'     => 0, 
+			'position'     => 0,
 			'active'       => true,
 			'module'       => $module_name,
 		));
@@ -195,7 +195,6 @@ class AdminReforestActionController extends ModuleAdminController
 				'industry'       => Configuration::get('RA_MERCHANT_INDUSTRY'),
 				'transaction'    => Configuration::get('RA_MERCHANT_TRANSACTION'),
 				'shop_uri'       => $this->context->shop->getBaseURL(),
-				'random'         => rand(1, 100), // TODO : delete
 			);
 
 			$result = $this->module->call->createAccount($datas);

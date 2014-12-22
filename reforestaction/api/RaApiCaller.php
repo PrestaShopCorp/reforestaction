@@ -51,17 +51,7 @@ class RaApiCaller extends ApiCaller
 			if (!is_array($fields))
 				$fields = array($fields);
 
-			// Build str
-			if (extension_loaded('pecl_http'))
-				$return = http_build_str($fields);
-			else
-			{
-				$options = '';
-				foreach ($fields as $key => $field)
-					$options[] = $key.'='.urlencode($field);
-
-				$return = implode('&', $options);
-			}
+			$return = http_build_query($fields);
 		}
 
 		return $return;
@@ -75,7 +65,7 @@ class RaApiCaller extends ApiCaller
 	{
 		$this->verb = 'GET';
 		$key = Configuration::get('RA_MERCHANT_KEY');
-		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/status?merchant_key='.$key.'&rand='.rand(0, 100);
+		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/status?merchant_key='.$key;
 
 		$this->makeCall();
 
@@ -105,7 +95,7 @@ class RaApiCaller extends ApiCaller
 	public function sendOrder(array $fields)
 	{
 		$this->verb = 'POST';
-		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/orders?rand='.rand(0, 10);
+		$this->endpoint = 'merchants/'.Configuration::get('RA_MERCHANT_ID').'/orders';
 
 		$this->makeCall($this->getBody($fields));
 

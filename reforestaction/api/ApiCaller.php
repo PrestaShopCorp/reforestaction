@@ -103,7 +103,7 @@ abstract class ApiCaller
 		$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Making new connection to :').' '.$uri_to_call;
 
 		// Init for cURL
-		if (extension_loaded('curl'))
+		if (extension_loaded('curl') && function_exists('curl_init'))
 			$this->response = $this->connectByCurl($uri_to_call, $http_header, $body, $user, $passwd);
 		// Init for fsock
 		else if (function_exists('fsockopen'))

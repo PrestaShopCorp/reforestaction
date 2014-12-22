@@ -63,6 +63,9 @@ class ReforestAction extends Module
 
 		$this->includeFiles();
 
+		if (!extension_loaded('curl'))
+			$this->warning .= $this->l('To use your module, please activate cURL (PHP extension)');
+
 		// Check upgrade if enabled and installed
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
 			$this->upgrade();
@@ -75,11 +78,11 @@ class ReforestAction extends Module
 		/* Import models */
 		foreach (scandir($path) as $class)
 		{
-			if(is_file($path.$class))
+			if (is_file($path.$class))
 			{
-				$class_name = substr($class, 0, -4);
+				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if(!class_exists($class_name) && $class_name != 'index')
+				if (!class_exists($class_name) && $class_name != 'index')
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -89,11 +92,11 @@ class ReforestAction extends Module
 		/* Import helpers */
 		foreach (scandir($path) as $class)
 		{
-			if(is_file($path.$class))
+			if (is_file($path.$class))
 			{
-				$class_name = substr($class, 0, -4);
+				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if(!class_exists($class_name) && $class_name != 'index')
+				if (!class_exists($class_name) && $class_name != 'index')
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -118,7 +121,7 @@ class ReforestAction extends Module
 			return false;
 
 		// Install tabs
-		if(!$this->installTabs())
+		if (!$this->installTabs())
 			return false;
 
 		// Registration hook
@@ -158,7 +161,7 @@ class ReforestAction extends Module
 			return false;
 
 		// Delete tabs
-		if(!$this->uninstallTabs())
+		if (!$this->uninstallTabs())
 			return false;
 
 		// Uninstall default
@@ -172,22 +175,22 @@ class ReforestAction extends Module
 	/**
 	 * Initialisation to install / uninstall
 	 */
-	private function installTabs() 
+	private function installTabs()
 	{
 		$result = true;
 
 		$menu_id = -1;
-		
+
 		$controllers = scandir(dirname(__FILE__).'/controllers/admin');
 		foreach ($controllers as $controller)
 		{
-			if(is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
+			if (is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
 			{
 				require_once(dirname(__FILE__).'/controllers/admin/'.$controller);
-				$controller_name = substr($controller, 0, -4);
-				if(class_exists($controller_name))
+				$controller_name = Tools::substr($controller, 0, -4);
+				if (class_exists($controller_name))
 				{
-					if(method_exists($controller_name, 'install'))
+					if (method_exists($controller_name, 'install'))
 						$result &= call_user_func(array($controller_name, 'install'), $menu_id, $this->name);
 				}
 			}
@@ -203,7 +206,7 @@ class ReforestAction extends Module
 	 */
 	public function uninstallTabs()
 	{
-		return reforestactionTotAdminTabHelper::deleteAdminTabs($this->name);
+		return ReforestactionTotAdminTabHelper::deleteAdminTabs($this->name);
 	}
 
 	############################################################################################################
@@ -515,7 +518,7 @@ class ReforestAction extends Module
 
 		// if status never check or too old
 		if ($last_check == false || (($current_time - $last_check) > $duration))
-		{	
+		{
 			$this->initCall();
 			$result = $this->call->getStatus();
 			$current_status = Configuration::get('RA_MERCHANT_STATUS');
