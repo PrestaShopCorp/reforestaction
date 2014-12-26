@@ -308,8 +308,8 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayHeader()
 	{
-		$this->context->controller->addCss($this->getPathUri().'views/css/'.$this->name.'.css');
-		$this->context->controller->addJs($this->getPathUri().'views/js/'.$this->name.'.js');
+		$this->context->controller->addCss($this->getPathUri().'css/'.$this->name.'.css');
+		$this->context->controller->addJs($this->getPathUri().'js/'.$this->name.'.js');
 		$this->context->controller->addJqueryPlugin('fancybox');
 	}
 
@@ -434,7 +434,7 @@ class ReforestAction extends Module
 		if (!$this->call instanceof ApiCaller)
 		{
 			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->call = new RaApiCaller('http://localhost/reforestaction/', $this);
+			$this->call = new RaApiCaller('http://srvprod.reforestaction.dev.202-ecommerce.com/', $this, 'reforestaction', 'apira');
 		}
 	}
 

@@ -1,4 +1,6 @@
 .reforestaction_checkbox .checkbox.newsletter
 {
 	display: none;
+	clear: both;
+	margin-top: 3px;
 }

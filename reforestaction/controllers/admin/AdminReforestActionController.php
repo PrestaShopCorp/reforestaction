@@ -200,7 +200,7 @@ class AdminReforestActionController extends ModuleAdminController
 			$result = $this->module->call->createAccount($datas);
 
 			// If create account successfull
-			if ($result->error == false)
+			if (is_object($result) && isset($result->error) && $result->error == false)
 			{
 				Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_WAITING);
 				Configuration::updateValue('RA_MERCHANT_ID', $result->id_merchant);

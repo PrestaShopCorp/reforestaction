@@ -72,12 +72,26 @@ abstract class ApiCaller
 	protected $debug = false;
 
 	/**
+	 * 401 User
+	 * @var string
+	 */
+	protected $user;
+
+	/**
+	 * 401 Password
+	 * @var string
+	 */
+	protected $passwd;
+
+	/**
 	 * Initialization
 	 */
-	public function __construct($host, Module $module)
+	public function __construct($host, Module $module, $user = null, $passwd = null)
 	{
 		$this->host     = $host;
 		$this->module   = $module;
+		$this->user     = $user;
+		$this->passwd   = $passwd;
 	}
 
 	/**
@@ -94,7 +108,7 @@ abstract class ApiCaller
 	 * @param  string $passwd      User password
 	 * @return mixed               Call
 	 */
-	protected function makeCall($body = null, $http_header = null, $user = null, $passwd = null)
+	protected function makeCall($body = null, $http_header = null)
 	{
 		// init uri to call
 		$uri_to_call = $this->host.$this->endpoint;
@@ -104,10 +118,10 @@ abstract class ApiCaller
 
 		// Init for cURL
 		if (extension_loaded('curl') && function_exists('curl_init'))
-			$this->response = $this->connectByCurl($uri_to_call, $http_header, $body, $user, $passwd);
+			$this->response = $this->connectByCurl($uri_to_call, $http_header, $body, $this->user, $this->passwd);
 		// Init for fsock
 		else if (function_exists('fsockopen'))
-			$this->response = $this->connectByFsock($uri_to_call, $http_header, $body, $user, $passwd);
+			$this->response = $this->connectByFsock($uri_to_call, $http_header, $body, $this->user, $this->passwd);
 		else
 		{
 			$this->logs[] = '['.strftime('%Y-%m-%d %H:%M:%S').'] : '.$this->module->l('Call is not possible, cURL and fsockopen is not enable.');
