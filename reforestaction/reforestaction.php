@@ -589,13 +589,20 @@ class ReforestAction extends Module
 
 			$customer = new Customer((int)$order->id_customer);
 
+			$cart = new Cart($order->id_cart);
+
+			$sum = $cart->getOrderTotal(true, Cart::BOTH);
+
 			$datas = array(
 				'id_order'       => $id_order,
-				'pourcentage'    => $this->calculateRatio(),
-				'merchant_state' => Configuration::get('RA_MERCHANT_STATUS'),
+				'percent'        => $this->calculateRatio(),
 				'merchant_key'   => Configuration::get('RA_MERCHANT_KEY'),
 				'newsletter'     => $reforestaction->newsletter,
 				'email'          => $customer->email,
+				'date_sent'      => $reforestaction->date_sent,
+				'paid'           => $reforestaction->date_sent,
+				'invoiced'       => '',
+				'sum'            => $sum
 			);
 
 			$this->initCall();
@@ -676,43 +683,43 @@ class ReforestAction extends Module
 	{
 		$industries = array(
 			array(
-				'key' => 1,
+				'key' => 'House, decoration',
 				'name' => $this->l('House, decoration'),
 			),
 			array(
-				'key' => 2,
+				'key' => 'Cosmetics',
 				'name' => $this->l('Cosmetics'),
 			),
 			array(
-				'key' => 3,
+				'key' => 'Shoes, accessories',
 				'name' => $this->l('Shoes, accessories'),
 			),
 			array(
-				'key' => 4,
+				'key' => 'Childrens',
 				'name' => $this->l('Childrens'),
 			),
 			array(
-				'key' => 5,
+				'key' => 'Food, drinks',
 				'name' => $this->l('Food, drinks'),
 			),
 			array(
-				'key' => 6,
+				'key' => 'Clothing',
 				'name' => $this->l('Clothing'),
 			),
 			array(
-				'key' => 7,
+				'key' => 'Sport',
 				'name' => $this->l('Sport'),
 			),
 			array(
-				'key' => 8,
+				'key' => 'Technology',
 				'name' => $this->l('Technology'),
 			),
 			array(
-				'key' => 9,
+				'key' => 'Entertainment',
 				'name' => $this->l('Entertainment'),
 			),
 			array(
-				'key' => 10,
+				'key' =>  'Others',
 				'name' => $this->l('Others'),
 			),
 		);
@@ -728,23 +735,23 @@ class ReforestAction extends Module
 	{
 		$transactions = array(
 			array(
-				'key' => 1,
+				'key' => 'Less 1 per day',
 				'name' => $this->l('Less 1 per day')
 			),
 			array(
-				'key' => 2,
+				'key' => 'Between 1 and 5 per day',
 				'name' => $this->l('Between 1 and 5 per day')
 			),
 			array(
-				'key' => 3,
+				'key' => 'Between 5 and 10 per day',
 				'name' => $this->l('Between 5 and 10 per day')
 			),
 			array(
-				'key' => 4,
+				'key' => 'Between 10 and 20 per day',
 				'name' => $this->l('Between 10 and 20 per day')
 			),
 			array(
-				'key' => 5,
+				'key' => 'More 20 per day',
 				'name' => $this->l('More 20 per day')
 			),
 		);

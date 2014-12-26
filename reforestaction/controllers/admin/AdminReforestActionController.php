@@ -189,7 +189,7 @@ class AdminReforestActionController extends ModuleAdminController
 				'email'          => Configuration::get('RA_MERCHANT_EMAIL'),
 				'ps_version'     => _PS_VERSION_,
 				'module_version' => $this->module->version,
-				'company'        => Configuration::get('RA_MERCHANT_COMPANY_NAME'),
+				'company'        => Configuration::get('RA_MERCHANT_COMPANY'),
 				'phone'          => Configuration::get('RA_MERCHANT_PHONE'),
 				'address'        => Configuration::get('RA_MERCHANT_ADDRESS'),
 				'industry'       => Configuration::get('RA_MERCHANT_INDUSTRY'),

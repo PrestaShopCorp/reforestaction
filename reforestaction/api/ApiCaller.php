@@ -284,7 +284,6 @@ abstract class ApiCaller
 
 		fclose($handle);
 	}
-
 }
 
 ?>
