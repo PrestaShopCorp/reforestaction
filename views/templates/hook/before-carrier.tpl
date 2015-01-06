@@ -23,12 +23,12 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 <div class="reforestaction_checkbox">
-	<h3 class="condition_title">
+	<p class="ra_title">
 		{l s='Reforest\'Action' mod='reforestaction'}
-	</h3>
+	</p>
 	<p class="checkbox">
 		{l s='Reforest\'Action offers to offset the carbon footprint of your purchase by planting a tree!' mod='reforestaction'}
-		<a href="#" class="fancybox">{l s='Click here to learn more.' mod='reforestaction'}</a>
+		<a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Click here to learn more.' mod='reforestaction'}</a>
 		<br>
 		<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1">
 		<label for="reforestaction_checkbox">

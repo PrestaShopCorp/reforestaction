@@ -32,7 +32,7 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'ApiCaller.php';
 class RaApiCaller extends ApiCaller
 {
 
-	const PUBLIC_KEY = 'a';
+	const PUBLIC_KEY = 'kiphatrudi';
 
 	protected $debug = true;
 

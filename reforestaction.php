@@ -33,6 +33,7 @@ class ReforestAction extends Module
 	const ACCOUNT_WAITING = 1;
 	const ACCOUNT_BANNED  = 2;
 	const ACCOUNT_OK      = 3;
+	const ACCOUNT_WAITING_SLIMPAY = 4;
 
 	/**
 	 * Module link in BO
@@ -69,6 +70,18 @@ class ReforestAction extends Module
 		// Check upgrade if enabled and installed
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
 			$this->upgrade();
+
+		$this->dev = true;
+		$this->config = array(
+			'dev' => array(
+				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make_mandat_request.php',
+				'host' => 'http://localhost/api.reforestaction',
+			),
+			'prod' => array(
+				'url_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make-mandat-request.php',
+				'host' => 'http://localhost/api.reforestaction',
+			),
+		);
 
 	}
 
@@ -434,7 +447,7 @@ class ReforestAction extends Module
 		if (!$this->call instanceof ApiCaller)
 		{
 			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->call = new RaApiCaller('http://srvprod.reforestaction.dev.202-ecommerce.com/', $this, 'reforestaction', 'apira');
+			$this->call = new RaApiCaller('http://localhost/api.reforestaction/', $this, 'reforestaction', 'apira');
 		}
 	}
 
@@ -536,7 +549,7 @@ class ReforestAction extends Module
 
 					$this->createRaProduct();
 
-					Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_OK);
+					
 
 					if (!Configuration::get('RA_INSTALLATION'))
 						Configuration::updateValue('RA_INSTALLATION', strftime('%Y-%m-%d %H:%M:%S')); // In hours
@@ -550,12 +563,12 @@ class ReforestAction extends Module
 						else if ($result->message == 'BANNED')
 						{
 							$this->context->controller->warnings[] = $this->l('Your account has been banned.');
-							Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_BANNED);
+							
 						}
 					}
 				}
+				Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
 			}
-
 			Configuration::updateValue('RA_LAST_CHECK', time());
 		}
 	}
@@ -591,7 +604,7 @@ class ReforestAction extends Module
 
 			$cart = new Cart($order->id_cart);
 
-			$sum = $cart->getOrderTotal(true, Cart::BOTH);
+			$sum = $reforestaction->qty * $reforestaction->price_exc;
 
 			$datas = array(
 				'id_order'       => $id_order,
@@ -602,7 +615,10 @@ class ReforestAction extends Module
 				'date_sent'      => $reforestaction->date_sent,
 				'paid'           => $reforestaction->date_sent,
 				'invoiced'       => '',
-				'sum'            => $sum
+				'sum'            => $sum,
+				'newsletter' 	=> $reforestaction->newsletter,
+				'firstname' 	=> $customer->firstname,
+				'lastname'		=> $customer->lastname
 			);
 
 			$this->initCall();
@@ -757,6 +773,15 @@ class ReforestAction extends Module
 		);
 
 		return $transactions;
+	}
+
+	public function getConfig($name)
+	{
+		if($this->dev)
+			return $this->config['dev'][$name];
+		else
+			return $this->config['prod'][$name];
+
 	}
 
 }

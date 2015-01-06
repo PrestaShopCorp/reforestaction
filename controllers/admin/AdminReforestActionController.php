@@ -34,7 +34,7 @@ class AdminReforestActionController extends ModuleAdminController
 		// Activate bootstrap
 		$this->bootstrap = true;
 
-		$disabled = Configuration::get('RA_MERCHANT_STATUS') != false;
+		$disabled = Configuration::get('RA_MERCHANT_STATUS') != ReforestAction::ACCOUNT_OK;
 
 		$this->fields_options = array(
 			'settings' => array(
@@ -57,14 +57,37 @@ class AdminReforestActionController extends ModuleAdminController
 						'required' => true,
 						'size'  => 80
 					),
-					'RA_MERCHANT_ADDRESS'     => array(
-						'title' => $this->l('Address:'),
-						'type'  => 'textarea',
+					'RA_MERCHANT_ADDRESS_1'     => array(
+						'title' => $this->l('Address 1:'),
+						'type'  => 'text',
 						'desc'  => null,
 						'disabled' => $disabled,
 						'required' => true,
-						'rows'  => 10,
-						'cols'  => 80
+						'size'  => 80
+					),
+					'RA_MERCHANT_ADDRESS_2'     => array(
+						'title' => $this->l('Address 2:'),
+						'type'  => 'text',
+						'desc'  => null,
+						'disabled' => $disabled,
+						'required' => false,
+						'size'  => 80
+					),
+					'RA_MERCHANT_POSTAL_CODE'     => array(
+						'title' => $this->l('Postal code :'),
+						'type'  => 'text',
+						'desc'  => null,
+						'disabled' => $disabled,
+						'required' => true,
+						'size'  => 80
+					),
+					'RA_MERCHANT_CITY'     => array(
+						'title' => $this->l('City :'),
+						'type'  => 'text',
+						'desc'  => null,
+						'disabled' => $disabled,
+						'required' => true,
+						'size'  => 80
 					),
 					'RA_MERCHANT_INDUSTRY'    => array(
 						'title' => $this->l('Industry:'),
@@ -157,6 +180,8 @@ class AdminReforestActionController extends ModuleAdminController
 		{
 			if ($current_status == ReforestAction::ACCOUNT_WAITING)
 				$this->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
+			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
+				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate"> '.$this->l('here').' </a> '.$this->l('to sign the mandate');
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
 				$this->errors[] = $this->l('Your account has been banned.');
 		}
@@ -191,10 +216,14 @@ class AdminReforestActionController extends ModuleAdminController
 				'module_version' => $this->module->version,
 				'company'        => Configuration::get('RA_MERCHANT_COMPANY'),
 				'phone'          => Configuration::get('RA_MERCHANT_PHONE'),
-				'address'        => Configuration::get('RA_MERCHANT_ADDRESS'),
+				'address_1' => Configuration::get('RA_MERCHANT_ADDRESS_1'),
+				'address_2' => Configuration::get('RA_MERCHANT_ADDRESS_2'),
+				'postal_code' 	 => Configuration::get('RA_MERCHANT_POSTAL_CODE'),
+				'city' 			 => Configuration::get('RA_MERCHANT_CITY'),
 				'industry'       => Configuration::get('RA_MERCHANT_INDUSTRY'),
 				'transaction'    => Configuration::get('RA_MERCHANT_TRANSACTION'),
 				'shop_uri'       => $this->context->shop->getBaseURL(),
+				'country_code'   => Country::getIsoById(Configuration::get('PS_COUNTRY_DEFAULT'))
 			);
 
 			$result = $this->module->call->createAccount($datas);
@@ -202,7 +231,6 @@ class AdminReforestActionController extends ModuleAdminController
 			// If create account successfull
 			if (is_object($result) && isset($result->error) && $result->error == false)
 			{
-				Configuration::updateValue('RA_MERCHANT_STATUS', ReforestAction::ACCOUNT_WAITING);
 				Configuration::updateValue('RA_MERCHANT_ID', $result->id_merchant);
 				Configuration::updateValue('RA_MERCHANT_KEY', $result->merchant_key);
 
