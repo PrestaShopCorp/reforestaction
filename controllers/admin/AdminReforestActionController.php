@@ -34,7 +34,7 @@ class AdminReforestActionController extends ModuleAdminController
 		// Activate bootstrap
 		$this->bootstrap = true;
 
-		$disabled = Configuration::get('RA_MERCHANT_STATUS') != ReforestAction::ACCOUNT_OK;
+		$disabled = Configuration::get('RA_MERCHANT_STATUS') && Configuration::get('RA_MERCHANT_STATUS') != ReforestAction::ACCOUNT_OK;
 
 		$this->fields_options = array(
 			'settings' => array(

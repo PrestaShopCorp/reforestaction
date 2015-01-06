@@ -610,7 +610,6 @@ class ReforestAction extends Module
 				'id_order'       => $id_order,
 				'percent'        => $this->calculateRatio(),
 				'merchant_key'   => Configuration::get('RA_MERCHANT_KEY'),
-				'newsletter'     => $reforestaction->newsletter,
 				'email'          => $customer->email,
 				'date_sent'      => $reforestaction->date_sent,
 				'paid'           => $reforestaction->date_sent,
