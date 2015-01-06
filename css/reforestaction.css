@@ -1,4 +1,4 @@
-.reforestaction_checkbox .checkbox.newsletter
+#reforestaction_table .checkbox.newsletter
 {
 	display: none;
 	clear: both;
@@ -9,9 +9,35 @@
 {
 	font-weight: bold;
 	color: #333333;
+	padding-bottom:5px;
 }
 
-DIV .reforestaction_checkbox
+#reforestaction_table
 {
-	padding-bottom: 20px;
+	border: 1px solid #BDC2C9;
+	margin-bottom:10px;
+	width: 100%;
 }
+
+	#reforestaction_table td
+	{
+		border: 1px solid #BDC2C9;
+		padding:5px;
+		text-align: center;
+	}
+
+	#reforestaction_table td:first-child
+	{
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	#reforestaction_table td img
+	{
+		height:40px;
+	}
+
+	#reforestaction_table .reforestaction_content
+	{
+		text-align: left;
+	}

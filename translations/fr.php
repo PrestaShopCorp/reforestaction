@@ -28,7 +28,6 @@ $_MODULE['<{reforestaction}prestashop>apicaller_3e4a02f47d9234166ba6973835ca1140
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_f4f70727dc34561dfde1a3c529b6205c'] = 'Configuration';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_5e116ceb48a98fb755f22df7ea1e2396'] = 'Nom de la société :';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_673ae02fffb72f0fe68a66f096a01347'] = 'Téléphone :';
-$_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_2bf1d5fae1c321d594fdedf05058f709'] = 'Adresse :';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_e28fdce93b43310b7550c57b856a98fe'] = 'Secteur :';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_af1acc556e736432f8be1b73cff08df6'] = 'Nombre de transaction :';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_668a8d8d7ffe5da112b266e46b79b685'] = 'Prénom :';
@@ -37,8 +36,8 @@ $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_2ac23c61020e
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_5246f072c92f7313b1026f9f4f5c289b'] = 'Votre compte n\'as pas encore été vérifié par Reforest\'Action.';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_f5cf8c908c24322e738b59fa446ccaef'] = 'Votre compte a été banni.';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_714531c762f855781ee4208049612d73'] = 'Les informations ont déjà été sauvegardé.';
-$_MODULE['<{reforestaction}prestashop>before-carrier_29813e0029dfe072a3300cfa26f9eeab'] = 'Reforest\'Action';
-$_MODULE['<{reforestaction}prestashop>before-carrier_5edfd14ad4c61385d9e8518aae6778ae'] = 'Reforest\'Action vous propose de compenser l\'empreinte carbone de votre achat en replantant un arbre ! ';
+$_MODULE['<{reforestaction}prestashop>before-carrier_2bdb4c5fbb8ec62c3dc5398026fc35fa'] = 'Achat responsable';
+$_MODULE['<{reforestaction}prestashop>before-carrier_802b98813b2fdf5dcaf1ace6fb49029e'] = 'Je plante un arbre avec Reforest\'Action pour compenser les émissions en CO2 de mes achats';
 $_MODULE['<{reforestaction}prestashop>before-carrier_bc8053666f00da12f77c0cfba85f0929'] = 'Cliquez ici pour en savoir plus';
-$_MODULE['<{reforestaction}prestashop>before-carrier_601afbcb41a9897746613fab1c006934'] = 'Je souhaite compenser l\'empreinte carbone de mes achats. (Supp. de 0,99 € TTC)';
 $_MODULE['<{reforestaction}prestashop>before-carrier_64c5027ae13043258fb859e5f0bcf90a'] = 'Recevoir des nouvelles de mon arbre';
+$_MODULE['<{reforestaction}prestashop>before-carrier_2815e6d040bbf0a76cd28e85ea477b9e'] = '0,99€';

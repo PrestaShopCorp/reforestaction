@@ -31,11 +31,11 @@ $(function(){
 
 		if ($(this).is(':checked'))
 		{
-			$('.reforestaction_checkbox .checkbox.newsletter').slideDown();
+			$('#reforestaction_table .checkbox.newsletter').slideDown();
 		}
 		else
 		{
-			$('.reforestaction_checkbox .checkbox.newsletter').slideUp();	
+			$('#reforestaction_table .checkbox.newsletter').slideUp();	
 		}
 
 	});
