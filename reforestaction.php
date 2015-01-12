@@ -73,10 +73,15 @@ class ReforestAction extends Module
 			$this->upgrade();
 
 		$this->dev = true;
+		$this->env = 'local';
 		$this->config = array(
-			'dev' => array(
+			'local' => array(
 				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
 				'host' => 'http://localhost/api.reforestaction',
+			),
+			'dev' => array(
+				'url_to_slimpay' => 'http://srvprod.reforestaction.dev.202-ecommerce.com/slimpay/api/make_mandat_request.php',
+				'host' => 'http://srvprod.reforestaction.dev.202-ecommerce.com',	
 			),
 			'prod' => array(
 				'url_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make-mandat-request.php',
@@ -448,7 +453,7 @@ class ReforestAction extends Module
 		if (!$this->call instanceof ApiCaller)
 		{
 			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->call = new RaApiCaller('http://localhost/api.reforestaction/', $this, 'reforestaction', 'apira');
+			$this->call = new RaApiCaller($this->getConfig('host'), $this, 'reforestaction', 'apira');
 		}
 	}
 
@@ -778,11 +783,7 @@ class ReforestAction extends Module
 
 	public function getConfig($name)
 	{
-		if($this->dev)
-			return $this->config['dev'][$name];
-		else
-			return $this->config['prod'][$name];
-
+		return $this->config[$this->env][$name];
 	}
 
 }
