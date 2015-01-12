@@ -52,6 +52,7 @@ class ReforestAction extends Module
 	 */
 	public function __construct()
 	{
+
 		$this->name = 'reforestaction';
 		$this->tab = 'front_office_features';
 		$this->version = '0.0.1';
@@ -74,7 +75,7 @@ class ReforestAction extends Module
 		$this->dev = true;
 		$this->config = array(
 			'dev' => array(
-				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make_mandat_request.php',
+				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
 				'host' => 'http://localhost/api.reforestaction',
 			),
 			'prod' => array(
@@ -518,7 +519,7 @@ class ReforestAction extends Module
 	/**
 	 * Check merchant status
 	 */
-	public function checkStatus()
+	public function checkStatus($force = false)
 	{
 		if (!Configuration::get('RA_MERCHANT_KEY'))
 			return false;
@@ -530,7 +531,7 @@ class ReforestAction extends Module
 		$duration = Configuration::get('RA_EVERY_HOUR') * 60 * 60;
 
 		// if status never check or too old
-		if ($last_check == false || (($current_time - $last_check) > $duration))
+		if ($force || $last_check == false || (($current_time - $last_check) > $duration))
 		{
 			$this->initCall();
 			$result = $this->call->getStatus();
@@ -580,6 +581,7 @@ class ReforestAction extends Module
 	 */
 	private function sendOrder($id_order, $id_order_state = null)
 	{
+		// var_dump($id_order);die;
 		if (!is_null($id_order_state))
 		{
 			// Instance of state

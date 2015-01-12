@@ -181,7 +181,7 @@ class AdminReforestActionController extends ModuleAdminController
 			if ($current_status == ReforestAction::ACCOUNT_WAITING)
 				$this->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
-				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate"> '.$this->l('here').' </a> '.$this->l('to sign the mandate');
+				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate if you have not signed it yet. If you have signed it please wait for the team to validate your account');
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
 				$this->errors[] = $this->l('Your account has been banned.');
 		}
@@ -191,7 +191,7 @@ class AdminReforestActionController extends ModuleAdminController
 
 	public function postProcess()
 	{
-		$this->module->checkStatus();
+		$this->module->checkStatus(true);
 		$this->module->createRaProduct();
 
 		parent::postProcess();

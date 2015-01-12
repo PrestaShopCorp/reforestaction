@@ -29,7 +29,9 @@ class ReforestactionFelicitationModuleFrontController extends ModuleFrontControl
 		parent::initContent();
 
 		// Init smarty content and set template to display
-
+		$this->context->smarty->assign(array(
+			'context' => $this->context
+		));
 		$this->setTemplate('felicitation.tpl');
 	}
 
