@@ -22,23 +22,31 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
-<div class="reforestaction_checkbox">
-	<p class="ra_title">
-		{l s='Reforest\'Action' mod='reforestaction'}
-	</p>
-	<p class="checkbox">
-		{l s='Reforest\'Action offers to offset the carbon footprint of your purchase by planting a tree!' mod='reforestaction'}
-		<a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Click here to learn more.' mod='reforestaction'}</a>
-		<br>
-		<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1">
-		<label for="reforestaction_checkbox">
-			{l s='I want to offset the carbon footprint of my purchases. (Supplement from 0.99 €)' mod='reforestaction'}
-		</label>
-	</p>
-	<p class="checkbox newsletter">
-		<input type="checkbox" name="reforestaction_newsletter" id="reforestaction_newsletter" value="1">
-		<label for="reforestaction_newsletter">
-			{l s='Subscribe to Reforest\'Action newsletter' mod='reforestaction'}
-		</label>
-	</p>
-</div>
+
+<table id="reforestaction_table">
+	<tr>
+		<td>
+			<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1">
+		</td>
+		<td>
+			<img src="{$module_dir}/img/logo.png" alt="">
+		</td>
+		<td class="reforestaction_content">	
+			<p class="ra_title">
+				{l s='Buy Responsible' mod='reforestaction'}
+			</p>
+			<label for="reforestaction_checkbox">{l s='I plant a tree with Reforest\'Action to compensate CO2\'s emissions from my purchase !' mod='reforestaction'}<br/>
+
+			<a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Click here to learn more.' mod='reforestaction'}</a></label>
+			<p class="checkbox newsletter">
+				<input type="checkbox" name="reforestaction_newsletter" id="reforestaction_newsletter" value="1">
+				<label for="reforestaction_newsletter">
+					{l s='Subscribe to Reforest\'Action newsletter' mod='reforestaction'}
+				</label>
+			</p>
+		</td>
+		<td>
+			{l s='0,99€' mod='reforestaction'}
+		</td>
+	</tr>
+</table>
