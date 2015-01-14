@@ -167,6 +167,20 @@ class AdminReforestActionController extends ModuleAdminController
 
 		if (Configuration::get('RA_MERCHANT_STATUS') != false)
 			unset($this->toolbar_btn['save']);
+
+		$this->toolbar_btn = array(
+			'preview' => array(
+				'href' => $this->context->link->getAdminLink('AdminReforestActionList'),
+				'desc' => $this->l('List')
+			)
+		);
+
+		$this->page_header_toolbar_btn = array(
+			'preview' => array(
+				'href' => $this->context->link->getAdminLink('AdminReforestActionList'),
+				'desc' => $this->l('List')
+			)
+		);
 	}
 
 	/**
@@ -181,7 +195,7 @@ class AdminReforestActionController extends ModuleAdminController
 			if ($current_status == ReforestAction::ACCOUNT_WAITING)
 				$this->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
-				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate"> '.$this->l('here').' </a> '.$this->l('to sign the mandate');
+				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate if you have not signed it yet. If you have signed it please wait for the team to validate your account');
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
 				$this->errors[] = $this->l('Your account has been banned.');
 		}
@@ -191,8 +205,17 @@ class AdminReforestActionController extends ModuleAdminController
 
 	public function postProcess()
 	{
-		$this->module->checkStatus();
-		$this->module->createRaProduct();
+		$this->module->checkStatus(true);
+		if (Tools::getValue('product') == 'force')
+		{
+			$this->module->createRaProduct(true);
+			$product = new Product((int)Configuration::get('RA_PRODUCT'));
+
+			if (Validate::isLoadedObject($product))
+				$this->redirect_after = self::$currentIndex.'&conf=3&token='.$this->token;
+			else
+				$this->errors[] = $this->l('Impossible to create product');
+		}
 
 		parent::postProcess();
 	}

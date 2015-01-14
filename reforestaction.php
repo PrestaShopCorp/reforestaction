@@ -52,15 +52,16 @@ class ReforestAction extends Module
 	 */
 	public function __construct()
 	{
+
 		$this->name = 'reforestaction';
 		$this->tab = 'front_office_features';
-		$this->version = '0.0.1';
+		$this->version = '0.0.2';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
 
 		$this->displayName = $this->l('Reforest Action');
-		$this->description = $this->l('Reforest action');
+		$this->description = $this->l('With Reforest\'action, your customers plant a tree in the world to offset the CO2 emissions of their purchases. They do this for the planet and allow you to increase your visibility on social networks.');
 
 		$this->includeFiles();
 
@@ -72,14 +73,19 @@ class ReforestAction extends Module
 			$this->upgrade();
 
 		$this->dev = true;
+		$this->env = 'prod';
 		$this->config = array(
+			'local' => array(
+				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
+				'host' => 'http://localhost/api.reforestaction/',
+			),
 			'dev' => array(
-				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make_mandat_request.php',
-				'host' => 'http://localhost/api.reforestaction',
+				'url_to_slimpay' => 'http://srvprod.reforestaction.dev.202-ecommerce.com/slimpay/api/make_mandat_request.php',
+				'host' => 'http://srvprod.reforestaction.dev.202-ecommerce.com/',	
 			),
 			'prod' => array(
-				'url_slimpay' => 'http://localhost/api.reforestaction/slimpay/tpe-php-5/tpe-php/make-mandat-request.php',
-				'host' => 'http://localhost/api.reforestaction',
+				'url_to_slimpay' => 'http://api.reforestaction.com/slimpay/api/make_mandat_request.php',
+				'host' => 'http://api.reforestaction.com/',
 			),
 		);
 
@@ -158,6 +164,10 @@ class ReforestAction extends Module
 		// If the first time OR the latest version upgrade is older than this one
 		if ($version === false || version_compare($version, $this->version, '<'))
 		{
+
+			if ($version === false || version_compare($version, '0.0.2', '<'))
+				$this->installTabs();
+
 			// Upgrade in DataBase the new version
 			Configuration::updateGlobalValue($cfg_name, $this->version);
 		}
@@ -338,7 +348,7 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayBeforeCarrier()
 	{
-		if ($this->accountIsActive())
+		if (!$this->accountIsActive())
 			return;
 
 		return $this->display(__FILE__, 'before-carrier.tpl');
@@ -351,8 +361,9 @@ class ReforestAction extends Module
 	 */
 	public function hookActionCarrierProcess($params)
 	{
-		if ($this->accountIsActive())
+		if (!$this->accountIsActive())
 			return;
+
 		// Cart variable
 		$cart = $params['cart'];
 		// Get products
@@ -447,30 +458,34 @@ class ReforestAction extends Module
 		if (!$this->call instanceof ApiCaller)
 		{
 			require_once $this->getLocalPath().DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR.'RaApiCaller.php';
-			$this->call = new RaApiCaller('http://localhost/api.reforestaction/', $this, 'reforestaction', 'apira');
+			$this->call = new RaApiCaller($this->getConfig('host'), $this, 'reforestaction', 'apira');
 		}
 	}
 
 	/**
 	 * Check if account is enable
 	 */
-	private function accountIsActive()
+	private function accountIsActive($check_product = true)
 	{
 		if (!Configuration::get('RA_MERCHANT_KEY'))
 			return false;
-
+		// Get account type
 		$account_type = (int)Configuration::get('RA_MERCHANT_STATUS');
 
-		return $account_type != ReforestAction::ACCOUNT_OK;
+		// Check if product exists
+		$product = new Product((int)Configuration::get('RA_PRODUCT'));
+
+		return $account_type == ReforestAction::ACCOUNT_OK && (($check_product == true && Validate::isLoadedObject($product)) || $check_product == false);
 	}
 
 	/**
 	 * Create Reforest Action product
 	 * @return int Created ID
 	 */
-	public function createRaProduct()
+	public function createRaProduct($force = false)
 	{
-		if (!$this->accountIsActive())
+
+		if ($this->accountIsActive(false) && !$force)
 			return;
 
 		$product = new Product(Configuration::get('RA_PRODUCT'));
@@ -511,14 +526,64 @@ class ReforestAction extends Module
 		{
 			$product->addToCategories($id_category);
 			StockAvailable::setQuantity($product->id, 0, 99999);
+
+			$this->createImage($product);
+
 			Configuration::updateValue('RA_PRODUCT', $product->id);
 		}
+	}
+
+	private function createImage($product)
+	{
+		$image = new Image();
+		$image->id_product = $product->id;
+		$image->position = Image::getHighestPosition($product->id) + 1;
+		$image->legend = $product->name;
+		$image->cover = 1;
+		$image->save();
+
+		$result = $this->copyImage($product, $image);
+
+		if (!isset($result['success']))
+		{
+			$handle = fopen(dirname(__FILE__) . '/Log upload.txt', 'a+');
+			fwrite($handle, $result['error']."\n");
+			fclose($handle);
+		}
+	}
+
+	private function copyImage($product, $image, $method = 'auto')
+	{
+
+		$tmpName = _PS_TMP_IMG_DIR_.'logo.png';
+		@copy($this->getLocalPath().'logo.png', $tmpName);
+
+		if (!$new_path = $image->getPathForCreation())
+			return array('error' => Tools::displayError('An error occurred during new folder creation'));
+		elseif (!ImageManager::resize($tmpName, $new_path.'.'.$image->image_format))
+			return array('error' => Tools::displayError('An error occurred while copying image.'));
+		elseif ($method == 'auto')
+		{
+			$imagesTypes = ImageType::getImagesTypes('products');
+			foreach ($imagesTypes as $imageType)
+			{
+				if (!ImageManager::resize($tmpName, $new_path.'-'.stripslashes($imageType['name']).'.'.$image->image_format, $imageType['width'], $imageType['height'], $image->image_format))
+					return array('error' => Tools::displayError('An error occurred while copying image:').' '.stripslashes($imageType['name']));
+			}
+		}
+		unlink($tmpName);
+		Hook::exec('actionWatermark', array('id_image' => $image->id, 'id_product' => $product->id));
+
+		if (!$image->update())
+			return array('error' => Tools::displayError('Error while updating status'));
+
+		return array('success' => true);
 	}
 
 	/**
 	 * Check merchant status
 	 */
-	public function checkStatus()
+	public function checkStatus($force = false)
 	{
 		if (!Configuration::get('RA_MERCHANT_KEY'))
 			return false;
@@ -530,7 +595,7 @@ class ReforestAction extends Module
 		$duration = Configuration::get('RA_EVERY_HOUR') * 60 * 60;
 
 		// if status never check or too old
-		if ($last_check == false || (($current_time - $last_check) > $duration))
+		if ($force || $last_check == false || (($current_time - $last_check) > $duration))
 		{
 			$this->initCall();
 			$result = $this->call->getStatus();
@@ -571,6 +636,13 @@ class ReforestAction extends Module
 			}
 			Configuration::updateValue('RA_LAST_CHECK', time());
 		}
+
+		$product = new Product((int)Configuration::get('RA_PRODUCT'));
+
+		if (!Validate::isLoadedObject($product))
+		{
+			$this->context->controller->warnings[] = $this->l('Your ReforestAction product has been delected, click the following link to recreate it:').' <a href="'.$this->context->link->getAdminLink('AdminReforestAction').'&product=force">'.$this->l('here').'</a>';
+		}
 	}
 
 	/**
@@ -592,12 +664,13 @@ class ReforestAction extends Module
 		$order = new Order((int)$id_order);
 		// get reforest action
 		$reforestaction = ReforestActionModel::getInstanceByIdCart((int)$order->id_cart);
+		$reforestaction->id_order = $id_order;
+		$reforestaction->save();
 
 		// Check if exists && if not send
 		if (Validate::isLoadedObject($reforestaction) && !$reforestaction->sent)
 		{
 
-			$reforestaction->sent = true;
 			$reforestaction->date_sent = strftime('%Y-%m-%d %H:%M:%S');
 
 			$customer = new Customer((int)$order->id_customer);
@@ -610,24 +683,27 @@ class ReforestAction extends Module
 				'id_order'       => $id_order,
 				'percent'        => $this->calculateRatio(),
 				'merchant_key'   => Configuration::get('RA_MERCHANT_KEY'),
-				'newsletter'     => $reforestaction->newsletter,
 				'email'          => $customer->email,
 				'date_sent'      => $reforestaction->date_sent,
 				'paid'           => $reforestaction->date_sent,
 				'invoiced'       => '',
 				'sum'            => $sum,
-				'newsletter' 	=> $reforestaction->newsletter,
-				'firstname' 	=> $customer->firstname,
-				'lastname'		=> $customer->lastname
+				'newsletter' 	 => $reforestaction->newsletter,
+				'firstname' 	 => $customer->firstname,
+				'lastname'		 => $customer->lastname
 			);
 
 			$this->initCall();
 			$result = $this->call->sendOrder($datas);
 
 			if (!isset($result->error))
+			{
+				$reforestaction->sent = true;
 				$reforestaction->id_order_reforestaction = $result->id_order;
-
+			}
+			
 			$reforestaction->save();
+
 		}
 	}
 
@@ -777,11 +853,7 @@ class ReforestAction extends Module
 
 	public function getConfig($name)
 	{
-		if($this->dev)
-			return $this->config['dev'][$name];
-		else
-			return $this->config['prod'][$name];
-
+		return $this->config[$this->env][$name];
 	}
 
 }

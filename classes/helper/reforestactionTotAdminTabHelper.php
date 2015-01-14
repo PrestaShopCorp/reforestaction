@@ -68,7 +68,7 @@ class ReforestactionTotAdminTabHelper
 	{
 		$id_parent = isset($t['id_parent']) ? $t['id_parent'] : self::getAdminTabIDByClassName($t['classNameParent']);
 
-		$tab = new Tab();
+		$tab = new Tab(Tab::getIdFromClassName($t['className']));
 		$tab->name = array(Configuration::get('PS_LANG_DEFAULT') => $t['name']);
 		$tab->class_name = $t['className'];
 		$tab->module = $t['module'];
