@@ -388,14 +388,6 @@ class ReforestAction extends Module
 		// Delete product if found and not checked
 		if ($find && !$checked)
 		{
-			$ip_address = array("78.192.80.40", "192.168.1.151", "127.0.0.1", "83.157.240.151", "192.168.7.33", "::1");
-			$ip_key = array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) ? 'HTTP_X_FORWARDED_FOR' : 'REMOTE_ADDR';
-			if(in_array($_SERVER[$ip_key], $ip_address)){
-				echo "<pre>";
-				var_dump($checked);
-				var_dump($find);
-				echo "</pre>";
-			}
 			$cart->updateQty($find['cart_quantity'], $id_product, null, null, 'down');
 			$model = ReforestActionModel::getInstanceByIdCart($cart->id);
 			$model->delete();
