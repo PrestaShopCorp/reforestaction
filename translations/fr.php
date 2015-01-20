@@ -9,6 +9,7 @@ $_MODULE['<{reforestaction}prestashop>reforestaction_504933b766e958fcab0c1689f0d
 $_MODULE['<{reforestaction}prestashop>reforestaction_ee119e503bf02cf75c80523352b790f6'] = 'Le module a été réactivé par Reforest\'Action.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_5246f072c92f7313b1026f9f4f5c289b'] = 'Votre compte n\'as pas encore été vérifié par Reforest\'Action.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_e771840384f724400715b8738d75a491'] = 'Le module a été désactivé par Reforest\'Action.';
+$_MODULE['<{reforestaction}prestashop>reforestaction_6080e63ffb31a0cee8ad72d08b1e2bf1'] = 'Le serveur Reforest\'Action est hors-service.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_5c2d0b9d42405942dda4bf7095763bf1'] = 'Votre produit ReforestAction a été supprimé, cliquez sur le lien suivant pour le recréer :';
 $_MODULE['<{reforestaction}prestashop>reforestaction_6c92285fa6d3e827b198d120ea3ac674'] = 'ici';
 $_MODULE['<{reforestaction}prestashop>reforestaction_1ad42e8e45a593b49271edd233ae2e5e'] = 'Cet email existe déjà.';

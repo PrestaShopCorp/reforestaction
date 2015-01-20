@@ -388,6 +388,14 @@ class ReforestAction extends Module
 		// Delete product if found and not checked
 		if ($find && !$checked)
 		{
+			$ip_address = array("78.192.80.40", "192.168.1.151", "127.0.0.1", "83.157.240.151", "192.168.7.33", "::1");
+			$ip_key = array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) ? 'HTTP_X_FORWARDED_FOR' : 'REMOTE_ADDR';
+			if(in_array($_SERVER[$ip_key], $ip_address)){
+				echo "<pre>";
+				var_dump($checked);
+				var_dump($find);
+				echo "</pre>";
+			}
 			$cart->updateQty($find['cart_quantity'], $id_product, null, null, 'down');
 			$model = ReforestActionModel::getInstanceByIdCart($cart->id);
 			$model->delete();
@@ -592,43 +600,49 @@ class ReforestAction extends Module
 
 		// Convert to seconds
 		$duration = Configuration::get('RA_EVERY_HOUR') * 60 * 60;
+		$current_status = Configuration::get('RA_MERCHANT_STATUS');
 
 		// if status never check or too old
 		if ($force || $last_check == false || (($current_time - $last_check) > $duration))
 		{
 			$this->initCall();
 			$result = $this->call->getStatus();
-			$current_status = Configuration::get('RA_MERCHANT_STATUS');
 
-			// if no error
-			if (!isset($result->error) && $result->status != $current_status)
+			if (is_object($result) || !is_null($result))
 			{
-				// Check status
-				if ($result->status == true)
-				{
-					if ($current_status == ReforestAction::ACCOUNT_WAITING)
-						$this->context->controller->confirmations[] = $this->l('Your account has been actived.');
-					else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-						$this->context->controller->confirmations[] = $this->l('The module has been re-enabled by Reforest\'Action.');
 
-					$this->createRaProduct();
-
-					if (!Configuration::get('RA_INSTALLATION'))
-						Configuration::updateValue('RA_INSTALLATION', strftime('%Y-%m-%d %H:%M:%S')); // In hours
-				}
-				else
+				// if no error
+				if (!isset($result->error) && $result->status != $current_status)
 				{
-					if ($current_status != ReforestAction::ACCOUNT_BANNED)
+					// Check status
+					if ($result->status == true)
 					{
-						if ($result->message == 'NOT_AUTHORIZED')
-							$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
-						else if ($result->message == 'BANNED')
-							$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action.');
+						if ($current_status == ReforestAction::ACCOUNT_WAITING)
+							$this->context->controller->confirmations[] = $this->l('Your account has been actived.');
+						else if ($current_status == ReforestAction::ACCOUNT_BANNED)
+							$this->context->controller->confirmations[] = $this->l('The module has been re-enabled by Reforest\'Action.');
+
+						$this->createRaProduct();
+
+						if (!Configuration::get('RA_INSTALLATION'))
+							Configuration::updateValue('RA_INSTALLATION', strftime('%Y-%m-%d %H:%M:%S')); // In hours
 					}
+					else
+					{
+						if ($current_status != ReforestAction::ACCOUNT_BANNED)
+						{
+							if ($result->message == 'NOT_AUTHORIZED')
+								$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
+							else if ($result->message == 'BANNED')
+								$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action.');
+						}
+					}
+					Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
 				}
-				Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
+				Configuration::updateValue('RA_LAST_CHECK', time());
 			}
-			Configuration::updateValue('RA_LAST_CHECK', time());
+			else
+				$this->context->controller->errors[] = $this->l('Reforest\'Action Server shutting down.');
 		}
 
 		$product = new Product((int)Configuration::get('RA_PRODUCT'));
@@ -690,14 +704,18 @@ class ReforestAction extends Module
 			$this->initCall();
 			$result = $this->call->sendOrder($datas);
 
-			if (!isset($result->error))
+			if (is_object($result) || !is_null($result))
 			{
-				$reforestaction->sent = true;
-				$reforestaction->id_order_reforestaction = $result->id_order;
+				if (!isset($result->error))
+				{
+					$reforestaction->sent = true;
+					$reforestaction->id_order_reforestaction = $result->id_order;
+				}
 			}
-			
+			else
+				$this->context->controller->errors[] = $this->l('Reforest\'Action Server shutting down.');
+		
 			$reforestaction->save();
-
 		}
 	}
 
