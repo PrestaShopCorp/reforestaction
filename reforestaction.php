@@ -72,8 +72,7 @@ class ReforestAction extends Module
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
 			$this->upgrade();
 
-		$this->dev = true;
-		$this->env = 'prod';
+		$this->env = 'dev';
 		$this->config = array(
 			'local' => array(
 				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
@@ -602,7 +601,7 @@ class ReforestAction extends Module
 			$current_status = Configuration::get('RA_MERCHANT_STATUS');
 
 			// if no error
-			if (!isset($result->error))
+			if (!isset($result->error) && $result->status != $current_status)
 			{
 				// Check status
 				if ($result->status == true)
@@ -610,11 +609,9 @@ class ReforestAction extends Module
 					if ($current_status == ReforestAction::ACCOUNT_WAITING)
 						$this->context->controller->confirmations[] = $this->l('Your account has been actived.');
 					else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-						$this->context->controller->confirmations[] = $this->l('Your account has been unbanned.');
+						$this->context->controller->confirmations[] = $this->l('The module has been re-enabled by Reforest\'Action.');
 
 					$this->createRaProduct();
-
-					
 
 					if (!Configuration::get('RA_INSTALLATION'))
 						Configuration::updateValue('RA_INSTALLATION', strftime('%Y-%m-%d %H:%M:%S')); // In hours
@@ -626,10 +623,7 @@ class ReforestAction extends Module
 						if ($result->message == 'NOT_AUTHORIZED')
 							$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 						else if ($result->message == 'BANNED')
-						{
-							$this->context->controller->warnings[] = $this->l('Your account has been banned.');
-							
-						}
+							$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action.');
 					}
 				}
 				Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
@@ -756,7 +750,7 @@ class ReforestAction extends Module
 				break;
 
 			case 'BANNED':
-				$message = $this->l('Your merchant account is banned.');
+				$message = $this->l('The module has been disabled by Reforest\'Action.');
 				break;
 
 			default:
@@ -774,6 +768,10 @@ class ReforestAction extends Module
 	public function getIndustries()
 	{
 		$industries = array(
+			array(
+				'key' => '',
+				'name' => $this->l('--- CHOOSE ---')
+			),
 			array(
 				'key' => 'House, decoration',
 				'name' => $this->l('House, decoration'),
@@ -827,6 +825,10 @@ class ReforestAction extends Module
 	{
 		$transactions = array(
 			array(
+				'key' => '',
+				'name' => $this->l('--- CHOOSE ---')
+			),
+			array(
 				'key' => 'Less 1 per day',
 				'name' => $this->l('Less 1 per day')
 			),
@@ -854,6 +856,16 @@ class ReforestAction extends Module
 	public function getConfig($name)
 	{
 		return $this->config[$this->env][$name];
+	}
+
+	public function getPresentationText()
+	{
+		return $this->display(__FILE__, 'presentation.tpl');
+	}
+
+	public function getActiveText()
+	{
+		return $this->display(__FILE__, 'active.tpl');
 	}
 
 }

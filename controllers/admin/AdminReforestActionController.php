@@ -34,7 +34,7 @@ class AdminReforestActionController extends ModuleAdminController
 		// Activate bootstrap
 		$this->bootstrap = true;
 
-		$disabled = Configuration::get('RA_MERCHANT_STATUS') && Configuration::get('RA_MERCHANT_STATUS') != ReforestAction::ACCOUNT_OK;
+		$disabled = Configuration::get('RA_MERCHANT_STATUS') != false;
 
 		$this->fields_options = array(
 			'settings' => array(
@@ -188,6 +188,8 @@ class AdminReforestActionController extends ModuleAdminController
 	 */
 	public function renderOptions()
 	{
+		$this->addJs($this->module->getLocalPath().'js/admin.js');
+
 		$current_status = Configuration::get('RA_MERCHANT_STATUS');
 
 		if ($current_status)
@@ -195,17 +197,21 @@ class AdminReforestActionController extends ModuleAdminController
 			if ($current_status == ReforestAction::ACCOUNT_WAITING)
 				$this->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
-				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate if you have not signed it yet. If you have signed it please wait for the team to validate your account');
+				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate.');
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-				$this->errors[] = $this->l('Your account has been banned.');
+				$this->errors[] = $this->l('The module has been disabled by Reforest\'Action.');
 		}
 
-		return parent::renderOptions();
+		$top = $this->module->getPresentationText();
+
+		if (Configuration::get('RA_MERCHANT_STATUS') && Configuration::get('RA_MERCHANT_STATUS') == ReforestAction::ACCOUNT_OK)
+			$top = $this->module->getActiveText();
+
+		return $top.parent::renderOptions();
 	}
 
 	public function postProcess()
 	{
-		$this->module->checkStatus(true);
 		if (Tools::getValue('product') == 'force')
 		{
 			$this->module->createRaProduct(true);
@@ -216,6 +222,8 @@ class AdminReforestActionController extends ModuleAdminController
 			else
 				$this->errors[] = $this->l('Impossible to create product');
 		}
+		
+		$this->module->checkStatus();
 
 		parent::postProcess();
 	}
@@ -239,8 +247,8 @@ class AdminReforestActionController extends ModuleAdminController
 				'module_version' => $this->module->version,
 				'company'        => Configuration::get('RA_MERCHANT_COMPANY'),
 				'phone'          => Configuration::get('RA_MERCHANT_PHONE'),
-				'address_1' => Configuration::get('RA_MERCHANT_ADDRESS_1'),
-				'address_2' => Configuration::get('RA_MERCHANT_ADDRESS_2'),
+				'address_1'      => Configuration::get('RA_MERCHANT_ADDRESS_1'),
+				'address_2'      => Configuration::get('RA_MERCHANT_ADDRESS_2'),
 				'postal_code' 	 => Configuration::get('RA_MERCHANT_POSTAL_CODE'),
 				'city' 			 => Configuration::get('RA_MERCHANT_CITY'),
 				'industry'       => Configuration::get('RA_MERCHANT_INDUSTRY'),
@@ -257,7 +265,7 @@ class AdminReforestActionController extends ModuleAdminController
 				Configuration::updateValue('RA_MERCHANT_ID', $result->id_merchant);
 				Configuration::updateValue('RA_MERCHANT_KEY', $result->merchant_key);
 
-				$this->module->checkStatus();
+				$this->module->checkStatus(true);
 
 				$this->redirect_after = self::$currentIndex.'&conf=3&token='.$this->token;
 			}
