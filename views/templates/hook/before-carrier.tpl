@@ -33,15 +33,15 @@
 		</td>
 		<td class="reforestaction_content">	
 			<p class="ra_title">
-				{l s='Buy Responsible' mod='reforestaction'}
+				<label for="reforestaction_checkbox">{l s='Buy Responsible' mod='reforestaction'}</label>
 			</p>
-			<label for="reforestaction_checkbox">{l s='I plant a tree with Reforest\'Action to compensate CO2\'s emissions from my purchase !' mod='reforestaction'}<br/>
-
-			<a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Click here to learn more.' mod='reforestaction'}</a></label>
+			<p>
+				{l s='I plant a tree with Reforest\'Action to compensate CO2\'s emissions from my purchase !' mod='reforestaction'} <a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Learn more.' mod='reforestaction'}</a>
+			</p>
 			<p class="checkbox newsletter">
 				<input type="checkbox" name="reforestaction_newsletter" id="reforestaction_newsletter" value="1">
 				<label for="reforestaction_newsletter">
-					{l s='Subscribe to Reforest\'Action newsletter' mod='reforestaction'}
+					{l s='Receive the monthly newsletter Reforest\'Action for news of my tree' mod='reforestaction'}
 				</label>
 			</p>
 		</td>
