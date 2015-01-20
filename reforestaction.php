@@ -72,7 +72,7 @@ class ReforestAction extends Module
 		if (self::isInstalled($this->name) && self::isEnabled($this->name))
 			$this->upgrade();
 
-		$this->env = 'dev';
+		$this->env = 'prod';
 		$this->config = array(
 			'local' => array(
 				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
@@ -146,7 +146,7 @@ class ReforestAction extends Module
 		if (!$this->registrationHook())
 			return false;
 
-		Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
+		Configuration::updateValue('RA_EVERY_HOUR', 0); // In hours
 
 		return true;
 	}
@@ -688,9 +688,10 @@ class ReforestAction extends Module
 				'paid'           => $reforestaction->date_sent,
 				'invoiced'       => '',
 				'sum'            => $sum,
-				'newsletter' 	 => $reforestaction->newsletter,
-				'firstname' 	 => $customer->firstname,
-				'lastname'		 => $customer->lastname
+				'newsletter'     => $reforestaction->newsletter,
+				'firstname'      => $customer->firstname,
+				'lastname'       => $customer->lastname,
+				'module_version' => $this->version
 			);
 
 			$this->initCall();

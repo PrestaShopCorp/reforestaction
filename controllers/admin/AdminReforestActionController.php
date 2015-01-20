@@ -199,7 +199,7 @@ class AdminReforestActionController extends ModuleAdminController
 			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
 				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate.');
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-				$this->errors[] = $this->l('The module has been disabled by Reforest\'Action.');
+				$this->errors[] = $this->l('The module has been disabled by Reforest Action.');
 		}
 
 		$top = $this->module->getPresentationText();
