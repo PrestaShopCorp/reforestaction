@@ -347,6 +347,8 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayBeforeCarrier()
 	{
+		$this->checkStatus(true);
+
 		if (!$this->accountIsActive())
 			return;
 
@@ -656,11 +658,11 @@ class ReforestAction extends Module
 							if ($result->message == 'NOT_AUTHORIZED')
 								$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 							else if ($result->message == 'BANNED')
-								$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action.');
+								$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
 						}
 					}
-					Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
 				}
+				Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
 				Configuration::updateValue('RA_LAST_CHECK', time());
 			}
 			else
@@ -694,11 +696,15 @@ class ReforestAction extends Module
 		$order = new Order((int)$id_order);
 		// get reforest action
 		$reforestaction = ReforestActionModel::getInstanceByIdCart((int)$order->id_cart);
+
+		if (!Validate::isLoadedObject($reforestaction))
+			return;
+
 		$reforestaction->id_order = $id_order;
 		$reforestaction->save();
 
 		// Check if exists && if not send
-		if (Validate::isLoadedObject($reforestaction) && !$reforestaction->sent)
+		if (!$reforestaction->sent)
 		{
 
 			$reforestaction->date_sent = strftime('%Y-%m-%d %H:%M:%S');
@@ -791,7 +797,7 @@ class ReforestAction extends Module
 				break;
 
 			case 'BANNED':
-				$message = $this->l('The module has been disabled by Reforest\'Action.');
+				$message = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
 				break;
 
 			default:

@@ -8,7 +8,7 @@ $_MODULE['<{reforestaction}prestashop>reforestaction_0650fb37c3540f5d7e045a7f672
 $_MODULE['<{reforestaction}prestashop>reforestaction_504933b766e958fcab0c1689f0dcf604'] = 'Votre compte a été activé.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_ee119e503bf02cf75c80523352b790f6'] = 'Le module a été réactivé par Reforest\'Action.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_5246f072c92f7313b1026f9f4f5c289b'] = 'Votre compte n\'as pas encore été vérifié par Reforest\'Action.';
-$_MODULE['<{reforestaction}prestashop>reforestaction_e771840384f724400715b8738d75a491'] = 'Le module a été désactivé par Reforest\'Action.';
+$_MODULE['<{reforestaction}prestashop>reforestaction_cfaedbc1f2ae25526e61b2580408588a'] = 'Le module a été désactivé par Reforest\'Action. Pour toute demande d\'information, vous pouvez nous contacter sur :';
 $_MODULE['<{reforestaction}prestashop>reforestaction_6080e63ffb31a0cee8ad72d08b1e2bf1'] = 'Le serveur Reforest\'Action est hors-service.';
 $_MODULE['<{reforestaction}prestashop>reforestaction_5c2d0b9d42405942dda4bf7095763bf1'] = 'Votre produit ReforestAction a été supprimé, cliquez sur le lien suivant pour le recréer :';
 $_MODULE['<{reforestaction}prestashop>reforestaction_6c92285fa6d3e827b198d120ea3ac674'] = 'ici';
@@ -62,7 +62,7 @@ $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_5246f072c92f
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_677601650b770b4f981fe56e15f4fb19'] = 'Veuillez cliquer';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_6c92285fa6d3e827b198d120ea3ac674'] = 'ici';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_08344af2dd8ffeff4e1221313fc4fc51'] = 'pour signer le mandat.';
-$_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_96df1c24daf7fb754d02be44c818082b'] = 'Le module a été désactivé par Reforest\'Action.';
+$_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_cfaedbc1f2ae25526e61b2580408588a'] = 'Le module a été désactivé par Reforest\'Action. Pour toute demande d\'information, vous pouvez nous contacter sur :';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_ca1db182acc131f0a9d3172ca7e66b28'] = 'Impossible de créer le produit';
 $_MODULE['<{reforestaction}prestashop>adminreforestactioncontroller_714531c762f855781ee4208049612d73'] = 'Les informations ont déjà été sauvegardé.';
 $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_d79cf3f429596f77db95c65074663a54'] = 'Commande ID';

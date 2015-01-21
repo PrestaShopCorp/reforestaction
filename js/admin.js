@@ -23,6 +23,10 @@ function RaVerifyForm()
 {
 	var verifMailREGEX = /^([\w+-]+(?:\.[\w+-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 	var mail = $('[name="RA_MERCHANT_EMAIL"]').val();
+
+	if (!mail)
+		return;
+
 	$('[name="RA_MERCHANT_EMAIL"]').removeAttr('style');
 	if (!verifMailREGEX.test(mail))
 	{
