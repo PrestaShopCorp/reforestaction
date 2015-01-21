@@ -232,6 +232,17 @@ class AdminReforestActionController extends ModuleAdminController
 	{
 		if (Configuration::get('RA_MERCHANT_STATUS') == false)
 		{
+
+			if ($postcode = Tools::getValue('RA_MERCHANT_POSTAL_CODE'))
+			{
+				$country = new Country(Configuration::get('PS_COUNTRY_DEFAULT'));
+				if (!$country->checkZipCode($postcode))
+				{
+					$this->errors[] = sprintf(Tools::displayError('The Zip/Postal code you\'ve entered is invalid. It must follow this format: %s'), str_replace('C', $country->iso_code, str_replace('N', '0', str_replace('L', 'A', $country->zip_code_format))));
+					return;
+				}
+			}
+
 			parent::processUpdateOptions();
 
 			if (count($this->errors))
