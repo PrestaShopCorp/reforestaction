@@ -54,13 +54,13 @@ class ReforestAction extends Module
 	{
 
 		$this->name = 'reforestaction';
-		$this->tab = 'front_office_features';
+		$this->tab = 'advertising_marketing';
 		$this->version = '0.1';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
 
-		$this->displayName = $this->l('Reforest Action');
+		$this->displayName = $this->l('Purchase responsable');
 		$this->description = $this->l('With Reforest\'action, your customers plant a tree in the world to offset the CO2 emissions of their purchases. They do this for the planet and allow you to increase your visibility on social networks.');
 
 		$this->includeFiles();
@@ -499,12 +499,12 @@ class ReforestAction extends Module
 			if ($lang['iso_code'] == 'fr')
 			{
 				$product->name[$id_lang]        = '1 arbre planté avec Reforest\'Action';
-				$product->description[$id_lang] = '<p>En cochant l\'option <strong>Achat Restponsable</strong> de Reforest\'Action, <strong>vous plantez un arbre</strong> sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.</p><p>1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.</p><p>Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> et la présentation du projet de reforestation auquel vous avez participé.</p>';
+				$product->description[$id_lang] = '<p>En cochant l\'option <strong>Achat Responsable</strong> de Reforest\'Action, <strong>vous plantez un arbre</strong> sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.</p><p>1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.</p><p>Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> et la présentation du projet de reforestation auquel vous avez participé.</p>';
 			}
 			else
 			{
 				$product->name[$id_lang]        = '1 tree planted with Reforest\'Action';
-				$product->description[$id_lang] = '<p>By selecting the option to <strong>Purchase Restponsable</strong> Reforest\'Action, <strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.</p><p>1 tree stores on average 150 kg of CO2 during its first 30 years of life, more than the C02 emissions from the production of most goods purchased over the Internet.</p><p>After your purchase you will receive by email a <strong>certificate of planting</strong> and the presentation of the reforestation project in which you participated.</p>';
+				$product->description[$id_lang] = '<p>By selecting the option to <strong>Purchase Responsable</strong> Reforest\'Action, <strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.</p><p>1 tree stores on average 150 kg of CO2 during its first 30 years of life, more than the C02 emissions from the production of most goods purchased over the Internet.</p><p>After your purchase you will receive by email a <strong>certificate of planting</strong> and the presentation of the reforestation project in which you participated.</p>';
 			}
 
 			// Link

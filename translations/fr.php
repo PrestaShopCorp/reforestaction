@@ -2,7 +2,7 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{reforestaction}prestashop>reforestaction_1dc8be0e5cb101bfb653faff8aaa1083'] = 'Reforest Action';
+$_MODULE['<{reforestaction}prestashop>reforestaction_59fa5d56ee080178ebd9e63a2904c1ce'] = 'Achat responsable';
 $_MODULE['<{reforestaction}prestashop>reforestaction_88da4aad184b59341e5168144a94357e'] = 'Avec Reforest\'action, vos clients plantent un arbre dans le monde pour compenser les émissions de CO2 de leurs achats. Ils agissent ainsi pour la planète et vous gagnez en visibilité sur les réseaux sociaux. ';
 $_MODULE['<{reforestaction}prestashop>reforestaction_0650fb37c3540f5d7e045a7f6720ceac'] = 'Pour utiliser le module, veuillez activer CuRL (PHP extension)';
 $_MODULE['<{reforestaction}prestashop>reforestaction_504933b766e958fcab0c1689f0dcf604'] = 'Votre compte a été activé.';
