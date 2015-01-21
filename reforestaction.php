@@ -55,7 +55,7 @@ class ReforestAction extends Module
 
 		$this->name = 'reforestaction';
 		$this->tab = 'front_office_features';
-		$this->version = '0.0.2';
+		$this->version = '0.1';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -497,13 +497,22 @@ class ReforestAction extends Module
 			$id_lang = (int)$lang['id_lang'];
 			// Name
 			if ($lang['iso_code'] == 'fr')
-				$product->name[$id_lang] = 'Produit Reforest Action';
+			{
+				$product->name[$id_lang]        = '1 arbre planté avec Reforest\'Action';
+				$product->description[$id_lang] = '<p>En cochant l\'option <strong>Achat Restponsable</strong> de Reforest\'Action, <strong>vous plantez un arbre</strong> sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.</p><p>1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.</p><p>Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> et la présentation du projet de reforestation auquel vous avez participé.</p>';
+			}
 			else
-				$product->name[$id_lang] = 'Reforest Action Product';
+			{
+				$product->name[$id_lang]        = '1 tree planted with Reforest\'Action';
+				$product->description[$id_lang] = '<p>By selecting the option to <strong>Purchase Restponsable</strong> Reforest\'Action, <strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.</p><p>1 tree stores on average 150 kg of CO2 during its first 30 years of life, more than the C02 emissions from the production of most goods purchased over the Internet.</p><p>After your purchase you will receive by email a <strong>certificate of planting</strong> and the presentation of the reforestation project in which you participated.</p>';
+			}
 
 			// Link
 			$product->link_rewrite[$id_lang] = Tools::link_rewrite($product->name[$id_lang]);
 		}
+
+
+		$product->description_short = $product->description;
 
 		// Get home category
 		$id_category = (int)Configuration::get('PS_HOME_CATEGORY');
@@ -534,28 +543,49 @@ class ReforestAction extends Module
 
 	private function createImage($product)
 	{
-		$image = new Image();
-		$image->id_product = $product->id;
-		$image->position = Image::getHighestPosition($product->id) + 1;
-		$image->legend = $product->name;
-		$image->cover = 1;
-		$image->save();
 
-		$result = $this->copyImage($product, $image);
+		$pictures = array(
+			array(
+				'path' => 'logo.png',
+				'cover' => true
+			),
+			array(
+				'path' => 'Les Bordes 11.jpg',
+			),
+			array(
+				'path' => 'Plantation Hommes.jpg',
+			),
+			array(
+				'path' => 'Plantation_arbre.jpg',
+			)
+		);
 
-		if (!isset($result['success']))
+		foreach ($pictures as $img)
 		{
-			$handle = fopen(dirname(__FILE__) . '/Log upload.txt', 'a+');
-			fwrite($handle, $result['error']."\n");
-			fclose($handle);
+
+			$image = new Image();
+			$image->id_product = $product->id;
+			$image->position = Image::getHighestPosition($product->id) + 1;
+			$image->legend = $product->name;
+			$image->cover = (boolean)(isset($img['cover']) && $img['cover'] == true);
+			$image->save();
+
+			$result = $this->copyImage($product, $image, 'auto', $img['path']);
+
+			if (!isset($result['success']))
+			{
+				$handle = fopen(dirname(__FILE__) . '/Log upload.txt', 'a+');
+				fwrite($handle, $result['error']."\n");
+				fclose($handle);
+			}
 		}
 	}
 
-	private function copyImage($product, $image, $method = 'auto')
+	private function copyImage($product, $image, $method = 'auto', $img_name = 'logo.png')
 	{
 
-		$tmpName = _PS_TMP_IMG_DIR_.'logo.png';
-		@copy($this->getLocalPath().'logo.png', $tmpName);
+		$tmpName = _PS_TMP_IMG_DIR_.$img_name;
+		@copy($this->getLocalPath().'images'.DIRECTORY_SEPARATOR.$img_name, $tmpName);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));
@@ -688,9 +718,9 @@ class ReforestAction extends Module
 				'paid'           => $reforestaction->date_sent,
 				'invoiced'       => '',
 				'sum'            => $sum,
-				'newsletter'     => $reforestaction->newsletter,
-				'firstname'      => $customer->firstname,
-				'lastname'       => $customer->lastname,
+				'newsletter' 	 => $reforestaction->newsletter,
+				'firstname' 	 => $customer->firstname,
+				'lastname'		 => $customer->lastname,
 				'module_version' => $this->version
 			);
 
