@@ -24,8 +24,6 @@
 	#reforestaction_table td
 	{
 		border: 1px solid #BDC2C9;
-		padding:5px;
-		text-align: center;
 	}
 
 		#reforestaction_table td p
@@ -40,10 +38,15 @@
 
 	#reforestaction_table td img
 	{
-		height:100px;
+		height:40px;
 	}
 
 	#reforestaction_table .reforestaction_content
 	{
 		text-align: left;
 	}
+
+#reforestaction_table #uniform-reforestaction_checkbox
+{
+	margin: 0 auto;
+}

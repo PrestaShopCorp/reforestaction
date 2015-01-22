@@ -82,7 +82,8 @@ $_MODULE['<{reforestaction}prestashop>before-carrier_2bdb4c5fbb8ec62c3dc5398026f
 $_MODULE['<{reforestaction}prestashop>before-carrier_802b98813b2fdf5dcaf1ace6fb49029e'] = 'Je plante un arbre avec Reforest\'Action pour compenser les émissions en CO2 de mes achats';
 $_MODULE['<{reforestaction}prestashop>before-carrier_f990e553cdc4c29c2efffba33e08a8c7'] = 'En savoir plus.';
 $_MODULE['<{reforestaction}prestashop>before-carrier_5622387d1108ce77e8c190748184c6bc'] = 'Recevoir la newsletter mensuelle de Reforest\'Action pour avoir des nouvelles de mon arbre';
-$_MODULE['<{reforestaction}prestashop>before-carrier_2815e6d040bbf0a76cd28e85ea477b9e'] = '0,99€';
+$_MODULE['<{reforestaction}prestashop>before-carrier_e2e79605fc9450ec17957cf0e910f5c6'] = 'TTC';
+$_MODULE['<{reforestaction}prestashop>before-carrier_887ee91702c962a70b87cbef07bbcaec'] = 'HT';
 $_MODULE['<{reforestaction}prestashop>presentation_18da0e4e7a934b4dfd3e2e44120ca196'] = 'Installation du module : 5 minutes montre en main';
 $_MODULE['<{reforestaction}prestashop>presentation_d45996dbf426abe134632f68a4d7d1fd'] = '1 – Complétez le formulaire ci-dessous ';
 $_MODULE['<{reforestaction}prestashop>presentation_5b4f1e768ba513e4bd98ec18f3389bb2'] = '2 – Complétez le mandat de prélèvement Slimpay';
