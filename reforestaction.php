@@ -305,7 +305,8 @@ class ReforestAction extends Module
 			'displayHeader',
 			'actionCarrierProcess',
 			'actionPaymentConfirmation',
-			'actionOrderHistoryAddAfter'
+			'actionOrderHistoryAddAfter',
+			'actionCartSave'
 		);
 
 		$nb_hooks = count($hooks);
@@ -352,6 +353,11 @@ class ReforestAction extends Module
 		if (!$this->accountIsActive())
 			return;
 
+		$ra_product = new Product((int)Configuration::get('RA_PRODUCT'));
+
+		$this->context->smarty->assign('ra_product_price', $ra_product->getPrice());
+		$this->context->smarty->assign('ra_product_price_wt_tax', $ra_product->getPrice(false, null));
+
 		return $this->display(__FILE__, 'before-carrier.tpl');
 	}
 
@@ -393,9 +399,11 @@ class ReforestAction extends Module
 			$cart->updateQty($find['cart_quantity'], $id_product, null, null, 'down');
 			$model = ReforestActionModel::getInstanceByIdCart($cart->id);
 			$model->delete();
+			$this->no_check = true;
 		}
 		else if ($checked)
 		{
+			$this->no_check = true;
 
 			if (!$find)
 			{
@@ -432,6 +440,37 @@ class ReforestAction extends Module
 	public function hookActionPaymentConfirmation($params)
 	{
 		$this->sendOrder($params['id_order']);
+	}
+
+	public function hookActionCartSave()
+	{
+		if (isset($this->no_check) && $this->no_check)
+			return;
+
+		$cart = $this->context->cart;
+
+		$model = ReforestActionModel::getInstanceByIdCart($cart->id);
+
+		$products = $cart->getProducts();
+		$find = false;
+		$ra_product_id = (int)Configuration::get('RA_PRODUCT');
+
+		if (is_array($products) && count($products))
+		{
+			foreach ($products as $product)
+			{
+				if ($product['id_product'] == $ra_product_id)
+				{
+					$find = $product;
+					break;
+				}
+			}
+		}
+
+		if (!$find && Validate::isLoadedObject($model))
+			$model->delete();
+		else if ($find && !Validate::isLoadedObject($model))
+			$cart->updateQty((int)$find['cart_quantity'], $ra_product_id, null, null, 'down');
 	}
 
 	############################################################################################################
@@ -587,7 +626,7 @@ class ReforestAction extends Module
 	{
 
 		$tmpName = _PS_TMP_IMG_DIR_.$img_name;
-		@copy($this->getLocalPath().'images'.DIRECTORY_SEPARATOR.$img_name, $tmpName);
+		@copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmpName);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));
