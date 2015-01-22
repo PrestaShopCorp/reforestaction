@@ -444,7 +444,7 @@ class ReforestAction extends Module
 
 	public function hookActionCartSave()
 	{
-		if (isset($this->no_check) && $this->no_check)
+		if ((isset($this->no_check) && $this->no_check) || !Validate::isLoadedObject($this->context->cart))
 			return;
 
 		$cart = $this->context->cart;
