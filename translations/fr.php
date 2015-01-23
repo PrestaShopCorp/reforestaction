@@ -69,7 +69,7 @@ $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_d79cf3f4
 $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_694e8d1f2ee056f98ee488bdc4982d73'] = 'Quantité';
 $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_7f8c0283f16925caed8e632086b81b9c'] = 'Envoyé';
 $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_c27ab32aaebe32b412746dc24c0e3283'] = 'Date d\'envoi';
-$_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_44749712dbec183e983dcd78a7736c41'] = 'Date';
+$_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_44749712dbec183e983dcd78a7736c41'] = 'Date de création';
 $_MODULE['<{reforestaction}prestashop>adminreforestactionlistcontroller_f1206f9fadc5ce41694f69129aecac26'] = 'Configurer';
 $_MODULE['<{reforestaction}prestashop>felicitation_8a8e161a3e120358bd7a2324a32f3fa8'] = 'Votre ami(e) a planté un arbre en l\'achetant sur ';
 $_MODULE['<{reforestaction}prestashop>felicitation_e5022df65e55e85e3d10dd2beebf9983'] = 'Grâce à l\'option';
