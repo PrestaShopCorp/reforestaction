@@ -40,41 +40,34 @@ class AdminReforestActionListController extends ModuleAdminController
 
 	public function renderList()
 	{
-		
 		$this->list_no_link = true;
 
 		$this->fields_list = array(
-			
 			'id_order' => array(
 				'title' => $this->l('Order ID'),
 			),
-		
 			'qty' => array(
 				'title' => $this->l('Quantity'),
 			),
-		
 			'sent' => array(
 				'title' => $this->l('Sent'),
 				'type' => 'bool',
 				'active' => 'status',
 				'activeVisu' => true,
 			),
-		
 			'date_sent' => array(
 				'title' => $this->l('Date sent'),
 				'type' => 'datetime',
 			),
-		
 			'date_add' => array(
 				'title' => $this->l('Date'),
 				'type' => 'datetime',
 			),
-			
 		);
 
 		return parent::renderList();
 	}
-	
+
 	/**
 	 * Install tabs
 	 * @param  integer $menu_id     parent id

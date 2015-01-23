@@ -1,6 +1,6 @@
 <?php
 /**
-* 2007-2014 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author    PrestaShop SA <contact@prestashop.com>
-*  @copyright 2007-2014 PrestaShop SA
+*  @copyright 2007-2015 PrestaShop SA
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -52,10 +52,9 @@ class ReforestAction extends Module
 	 */
 	public function __construct()
 	{
-
 		$this->name = 'reforestaction';
 		$this->tab = 'advertising_marketing';
-		$this->version = '0.1';
+		$this->version = '1.0.0';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -520,7 +519,6 @@ class ReforestAction extends Module
 	 */
 	public function createRaProduct($force = false)
 	{
-
 		if ($this->accountIsActive(false) && !$force)
 			return;
 
@@ -536,18 +534,43 @@ class ReforestAction extends Module
 			if ($lang['iso_code'] == 'fr')
 			{
 				$product->name[$id_lang]        = '1 arbre planté avec Reforest\'Action';
-				$product->description[$id_lang] = '<p>En cochant l\'option <strong>Achat Responsable</strong> de Reforest\'Action, <strong>vous plantez un arbre</strong> sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.</p><p>1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.</p><p>Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> et la présentation du projet de reforestation auquel vous avez participé.</p>';
+				$product->description[$id_lang] = '
+					<p>
+						En cochant l\'option <strong>Achat Responsable</strong> de Reforest\'Action, 
+						<strong>vous plantez un arbre</strong>
+						sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.
+					</p>
+				
+					<p>
+						1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, 
+						soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.
+					</p>
+					<p>
+						Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> 
+						et la présentation du projet de reforestation auquel vous avez participé.
+					</p>';
 			}
 			else
 			{
 				$product->name[$id_lang]        = '1 tree planted with Reforest\'Action';
-				$product->description[$id_lang] = '<p>By selecting the option to <strong>Purchase Responsable</strong> Reforest\'Action, <strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.</p><p>1 tree stores on average 150 kg of CO2 during its first 30 years of life, more than the C02 emissions from the production of most goods purchased over the Internet.</p><p>After your purchase you will receive by email a <strong>certificate of planting</strong> and the presentation of the reforestation project in which you participated.</p>';
+				$product->description[$id_lang] = '
+				<p>
+					By selecting the option to <strong>Purchase Responsable</strong> Reforest\'Action, 
+					<strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.
+				</p>
+				<p>
+					1 tree stores on average 150 kg of CO2 during its first 30 years of life, 
+					more than the C02 emissions from the production of most goods purchased over the Internet.
+				</p>
+				<p>
+					After your purchase you will receive by email a <strong>certificate of planting</strong> 
+					and the presentation of the reforestation project in which you participated.
+				</p>';
 			}
 
 			// Link
 			$product->link_rewrite[$id_lang] = Tools::link_rewrite($product->name[$id_lang]);
 		}
-
 
 		$product->description_short = $product->description;
 
@@ -580,7 +603,6 @@ class ReforestAction extends Module
 
 	private function createImage($product)
 	{
-
 		$pictures = array(
 			array(
 				'path' => 'logo.png',
@@ -604,14 +626,14 @@ class ReforestAction extends Module
 			$image->id_product = $product->id;
 			$image->position = Image::getHighestPosition($product->id) + 1;
 			$image->legend = $product->name;
-			$image->cover = (boolean)(isset($img['cover']) && $img['cover'] == true);
+			$image->cover = isset($img['cover']) && $img['cover'] == true;
 			$image->save();
 
 			$result = $this->copyImage($product, $image, 'auto', $img['path']);
 
 			if (!isset($result['success']))
 			{
-				$handle = fopen(dirname(__FILE__) . '/Log upload.txt', 'a+');
+				$handle = fopen(dirname(__FILE__).'/Log upload.txt', 'a+');
 				fwrite($handle, $result['error']."\n");
 				fclose($handle);
 			}
@@ -620,24 +642,27 @@ class ReforestAction extends Module
 
 	private function copyImage($product, $image, $method = 'auto', $img_name = 'logo.png')
 	{
-
-		$tmpName = _PS_TMP_IMG_DIR_.$img_name;
-		@copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmpName);
+		$tmp_name = _PS_TMP_IMG_DIR_.$img_name;
+		copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));
-		elseif (!ImageManager::resize($tmpName, $new_path.'.'.$image->image_format))
+		elseif (!ImageManager::resize($tmp_name, $new_path.'.'.$image->image_format))
 			return array('error' => Tools::displayError('An error occurred while copying image.'));
 		elseif ($method == 'auto')
 		{
-			$imagesTypes = ImageType::getImagesTypes('products');
-			foreach ($imagesTypes as $imageType)
+			$images_types = ImageType::getImagesTypes('products');
+			foreach ($images_types as $image_type)
 			{
-				if (!ImageManager::resize($tmpName, $new_path.'-'.stripslashes($imageType['name']).'.'.$image->image_format, $imageType['width'], $imageType['height'], $image->image_format))
-					return array('error' => Tools::displayError('An error occurred while copying image:').' '.stripslashes($imageType['name']));
+				if (!ImageManager::resize(
+						$tmp_name,
+						$new_path.'-'.Tools::stripslashes($image_type['name']).'.'.$image->image_format,
+						$image_type['width'],
+						$image_type['height'], $image->image_format))
+					return array('error' => Tools::displayError('An error occurred while copying image:').' '.Tools::stripslashes($image_type['name']));
 			}
 		}
-		unlink($tmpName);
+		unlink($tmp_name);
 		Hook::exec('actionWatermark', array('id_image' => $image->id, 'id_product' => $product->id));
 
 		if (!$image->update())
@@ -690,10 +715,12 @@ class ReforestAction extends Module
 					{
 						if ($current_status != ReforestAction::ACCOUNT_BANNED)
 						{
+							$controller = $this->context->controller;
 							if ($result->message == 'NOT_AUTHORIZED')
-								$this->context->controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
+								$controller->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 							else if ($result->message == 'BANNED')
-								$this->context->controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
+								$controller->warnings[] = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').
+									'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
 						}
 					}
 				}
@@ -707,9 +734,8 @@ class ReforestAction extends Module
 		$product = new Product((int)Configuration::get('RA_PRODUCT'));
 
 		if (!Validate::isLoadedObject($product))
-		{
-			$this->context->controller->warnings[] = $this->l('Your ReforestAction product has been delected, click the following link to recreate it:').' <a href="'.$this->context->link->getAdminLink('AdminReforestAction').'&product=force">'.$this->l('here').'</a>';
-		}
+			$this->context->controller->warnings[] = $this->l('Your ReforestAction product has been delected, click the following link to recreate it:').
+				' <a href="'.$this->context->link->getAdminLink('AdminReforestAction').'&product=force">'.$this->l('here').'</a>';
 	}
 
 	/**
@@ -746,8 +772,6 @@ class ReforestAction extends Module
 
 			$customer = new Customer((int)$order->id_customer);
 
-			$cart = new Cart($order->id_cart);
-
 			$sum = $reforestaction->qty * $reforestaction->price_exc;
 
 			$datas = array(
@@ -778,7 +802,7 @@ class ReforestAction extends Module
 			}
 			else
 				$this->context->controller->errors[] = $this->l('Reforest\'Action Server shutting down.');
-		
+
 			$reforestaction->save();
 		}
 	}
@@ -832,7 +856,8 @@ class ReforestAction extends Module
 				break;
 
 			case 'BANNED':
-				$message = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
+				$message = $this->l('The module has been disabled by Reforest\'Action. For any further information, you can contact us on:').
+					'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
 				break;
 
 			default:
