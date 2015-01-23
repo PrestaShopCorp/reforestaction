@@ -78,10 +78,6 @@ class ReforestAction extends Module
 				'url_to_slimpay' => 'http://localhost/api.reforestaction/slimpay/api/make_mandat_request.php',
 				'host' => 'http://localhost/api.reforestaction/',
 			),
-			'dev' => array(
-				'url_to_slimpay' => 'http://srvprod.reforestaction.dev.202-ecommerce.com/slimpay/api/make_mandat_request.php',
-				'host' => 'http://srvprod.reforestaction.dev.202-ecommerce.com/',	
-			),
 			'prod' => array(
 				'url_to_slimpay' => 'http://api.reforestaction.com/slimpay/api/make_mandat_request.php',
 				'host' => 'http://api.reforestaction.com/',
@@ -146,7 +142,7 @@ class ReforestAction extends Module
 		if (!$this->registrationHook())
 			return false;
 
-		Configuration::updateValue('RA_EVERY_HOUR', 0); // In hours
+		Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
 
 		return true;
 	}
