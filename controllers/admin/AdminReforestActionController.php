@@ -197,9 +197,20 @@ class AdminReforestActionController extends ModuleAdminController
 			if ($current_status == ReforestAction::ACCOUNT_WAITING)
 				$this->warnings[] = $this->l('Your account has not been verified by Reforest Action.');
 			else if ($current_status == ReforestAction::ACCOUNT_WAITING_SLIMPAY)
-				$this->warnings[] = $this->l('Please click'). '<a href="'.$this->module->getConfig('url_to_slimpay').'?id_merchant='.Configuration::get('RA_MERCHANT_ID').'&merchant_key='.Configuration::get('RA_MERCHANT_KEY').'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.$this->l('to sign the mandate.');
+			{
+				$url = $this->module->getConfig('url_to_slimpay');
+				$url .= '?id_merchant='.Configuration::get('RA_MERCHANT_ID');
+				$url .= '&merchant_key='.Configuration::get('RA_MERCHANT_KEY');
+
+				$this->warnings[] = $this->l('Please click').'
+					<a href="'.$url.'" class="sign_the_mandate" target="_blank"> '.$this->l('here').' </a> '.
+					$this->l('to sign the mandate.');
+			}
 			else if ($current_status == ReforestAction::ACCOUNT_BANNED)
-				$this->errors[] = $this->l('The module has been disabled by Reforest Action. For any further information, you can contact us on:').'<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
+			{
+				$this->errors[] = $this->l('The module has been disabled by Reforest Action. For any further information, you can contact us on:').'
+					<a href="mailto:contact@reforestaction.com">contact@reforestaction.com</a>';
+			}
 		}
 
 		$top = $this->module->getPresentationText();
@@ -222,7 +233,7 @@ class AdminReforestActionController extends ModuleAdminController
 			else
 				$this->errors[] = $this->l('Impossible to create product');
 		}
-		
+
 		$this->module->checkStatus();
 
 		parent::postProcess();
@@ -238,7 +249,10 @@ class AdminReforestActionController extends ModuleAdminController
 				$country = new Country(Configuration::get('PS_COUNTRY_DEFAULT'));
 				if (!$country->checkZipCode($postcode))
 				{
-					$this->errors[] = sprintf(Tools::displayError('The Zip/Postal code you\'ve entered is invalid. It must follow this format: %s'), str_replace('C', $country->iso_code, str_replace('N', '0', str_replace('L', 'A', $country->zip_code_format))));
+					$this->errors[] = sprintf(
+							Tools::displayError('The Zip/Postal code you\'ve entered is invalid. It must follow this format: %s'),
+							str_replace('C', $country->iso_code, str_replace('N', '0', str_replace('L', 'A', $country->zip_code_format)))
+					);
 					return;
 				}
 			}
