@@ -67,10 +67,6 @@ class ReforestAction extends Module
 		if (!extension_loaded('curl'))
 			$this->warning .= $this->l('To use your module, please activate cURL (PHP extension)');
 
-		// Check upgrade if enabled and installed
-		if (self::isInstalled($this->name) && self::isEnabled($this->name))
-			$this->upgrade();
-
 		$this->env = 'prod';
 		$this->config = array(
 			'local' => array(
@@ -144,27 +140,6 @@ class ReforestAction extends Module
 		Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
 
 		return true;
-	}
-
-	/**
-	 * Upgrade if necessary
-	 */
-	public function upgrade()
-	{
-		// Configuration name
-		$cfg_name = Tools::strtoupper($this->name.'_version');
-		// Get latest version upgraded
-		$version = Configuration::getGlobalValue($cfg_name);
-		// If the first time OR the latest version upgrade is older than this one
-		if ($version === false || version_compare($version, $this->version, '<'))
-		{
-
-			if ($version === false || version_compare($version, '0.0.2', '<'))
-				$this->installTabs();
-
-			// Upgrade in DataBase the new version
-			Configuration::updateGlobalValue($cfg_name, $this->version);
-		}
 	}
 
 	/**
