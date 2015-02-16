@@ -67,10 +67,6 @@ class ReforestAction extends Module
 		if (!extension_loaded('curl'))
 			$this->warning .= $this->l('To use your module, please activate cURL (PHP extension)');
 
-		// Check upgrade if enabled and installed
-		if (self::isInstalled($this->name) && self::isEnabled($this->name))
-			$this->upgrade();
-
 		$this->env = 'prod';
 		$this->config = array(
 			'local' => array(
@@ -144,27 +140,6 @@ class ReforestAction extends Module
 		Configuration::updateValue('RA_EVERY_HOUR', 12); // In hours
 
 		return true;
-	}
-
-	/**
-	 * Upgrade if necessary
-	 */
-	public function upgrade()
-	{
-		// Configuration name
-		$cfg_name = Tools::strtoupper($this->name.'_version');
-		// Get latest version upgraded
-		$version = Configuration::getGlobalValue($cfg_name);
-		// If the first time OR the latest version upgrade is older than this one
-		if ($version === false || version_compare($version, $this->version, '<'))
-		{
-
-			if ($version === false || version_compare($version, '0.0.2', '<'))
-				$this->installTabs();
-
-			// Upgrade in DataBase the new version
-			Configuration::updateGlobalValue($cfg_name, $this->version);
-		}
 	}
 
 	/**
@@ -326,6 +301,9 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayHeader()
 	{
+		if (!$this->active)
+			return;
+
 		$this->context->controller->addCss($this->getPathUri().'css/'.$this->name.'.css');
 		$this->context->controller->addJs($this->getPathUri().'js/'.$this->name.'.js');
 		$this->context->controller->addJqueryPlugin('fancybox');
@@ -334,6 +312,9 @@ class ReforestAction extends Module
 
 	public function hookDisplayBackOfficeHeader()
 	{
+		if (!$this->active)
+			return;
+
 		$this->checkStatus();
 	}
 
@@ -343,6 +324,9 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayBeforeCarrier()
 	{
+		if (!$this->active)
+			return;
+
 		$this->checkStatus(true);
 
 		if (!$this->accountIsActive())
@@ -363,7 +347,8 @@ class ReforestAction extends Module
 	 */
 	public function hookActionCarrierProcess($params)
 	{
-		if (!$this->accountIsActive())
+
+		if (!$this->active || !$this->accountIsActive())
 			return;
 
 		// Cart variable
@@ -427,6 +412,9 @@ class ReforestAction extends Module
 
 	public function hookActionOrderHistoryAddAfter($params)
 	{
+		if (!$this->active)
+			return;
+
 		$order_history = $params['order_history'];
 
 		$this->sendOrder($order_history->id_order, $order_history->id_order_state);
@@ -434,12 +422,15 @@ class ReforestAction extends Module
 
 	public function hookActionPaymentConfirmation($params)
 	{
+		if (!$this->active)
+			return;
+
 		$this->sendOrder($params['id_order']);
 	}
 
 	public function hookActionCartSave()
 	{
-		if ((isset($this->no_check) && $this->no_check) || !Validate::isLoadedObject($this->context->cart))
+		if (!$this->active || (isset($this->no_check) && $this->no_check) || !Validate::isLoadedObject($this->context->cart))
 			return;
 
 		$cart = $this->context->cart;
@@ -605,17 +596,17 @@ class ReforestAction extends Module
 	{
 		$pictures = array(
 			array(
-				'path' => 'logo.png',
+				'path' => 'carrier-logo.png',
 				'cover' => true
 			),
 			array(
-				'path' => 'Les Bordes 11.jpg',
+				'path' => 'les-bordes-11.jpg',
 			),
 			array(
-				'path' => 'Plantation Hommes.jpg',
+				'path' => 'plantation-hommes.jpg',
 			),
 			array(
-				'path' => 'Plantation_arbre.jpg',
+				'path' => 'plantation-arbre.jpg',
 			)
 		);
 
