@@ -301,6 +301,9 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayHeader()
 	{
+		if (!$this->active)
+			return;
+
 		$this->context->controller->addCss($this->getPathUri().'css/'.$this->name.'.css');
 		$this->context->controller->addJs($this->getPathUri().'js/'.$this->name.'.js');
 		$this->context->controller->addJqueryPlugin('fancybox');
@@ -309,6 +312,9 @@ class ReforestAction extends Module
 
 	public function hookDisplayBackOfficeHeader()
 	{
+		if (!$this->active)
+			return;
+
 		$this->checkStatus();
 	}
 
@@ -318,6 +324,9 @@ class ReforestAction extends Module
 	 */
 	public function hookDisplayBeforeCarrier()
 	{
+		if (!$this->active)
+			return;
+
 		$this->checkStatus(true);
 
 		if (!$this->accountIsActive())
@@ -338,7 +347,8 @@ class ReforestAction extends Module
 	 */
 	public function hookActionCarrierProcess($params)
 	{
-		if (!$this->accountIsActive())
+
+		if (!$this->active || !$this->accountIsActive())
 			return;
 
 		// Cart variable
@@ -402,6 +412,9 @@ class ReforestAction extends Module
 
 	public function hookActionOrderHistoryAddAfter($params)
 	{
+		if (!$this->active)
+			return;
+
 		$order_history = $params['order_history'];
 
 		$this->sendOrder($order_history->id_order, $order_history->id_order_state);
@@ -409,12 +422,15 @@ class ReforestAction extends Module
 
 	public function hookActionPaymentConfirmation($params)
 	{
+		if (!$this->active)
+			return;
+
 		$this->sendOrder($params['id_order']);
 	}
 
 	public function hookActionCartSave()
 	{
-		if ((isset($this->no_check) && $this->no_check) || !Validate::isLoadedObject($this->context->cart))
+		if (!$this->active || (isset($this->no_check) && $this->no_check) || !Validate::isLoadedObject($this->context->cart))
 			return;
 
 		$cart = $this->context->cart;
