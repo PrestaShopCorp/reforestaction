@@ -580,17 +580,17 @@ class ReforestAction extends Module
 	{
 		$pictures = array(
 			array(
-				'path' => 'logo.png',
+				'path' => 'carrier-logo.png',
 				'cover' => true
 			),
 			array(
-				'path' => 'Les Bordes 11.jpg',
+				'path' => 'les-bordes-11.jpg',
 			),
 			array(
-				'path' => 'Plantation Hommes.jpg',
+				'path' => 'plantation-hommes.jpg',
 			),
 			array(
-				'path' => 'Plantation_arbre.jpg',
+				'path' => 'plantation-arbre.jpg',
 			)
 		);
 
