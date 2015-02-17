@@ -78,7 +78,6 @@ class ReforestAction extends Module
 				'host' => 'http://api.reforestaction.com/',
 			),
 		);
-
 	}
 
 	private function includeFiles()
@@ -956,7 +955,7 @@ class ReforestAction extends Module
 		return $this->config[$this->env][$name];
 	}
 
-	public function getPresentationText()
+	public function hookDisplayAdminReforestActionOptions()
 	{
 		return $this->display(__FILE__, 'presentation.tpl');
 	}
