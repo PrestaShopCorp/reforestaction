@@ -41,6 +41,14 @@
 		enctype="multipart/form-data">
 		{foreach $option_list AS $category => $categoryData}
 			{if isset($categoryData['top'])}{$categoryData['top']|escape:'htmlall'}{/if}
+			{hook h='displayAdminOptions'}
+			{if isset($name_controller)}
+				{capture name=hookName assign=hookName}display{$name_controller|ucfirst}Options{/capture}
+				{hook h=$hookName}
+			{elseif isset($smarty.get.controller)}
+				{capture name=hookName assign=hookName}display{$smarty.get.controller|ucfirst|htmlentities}Options{/capture}
+				{hook h=$hookName}
+			{/if}
 			<fieldset {if isset($categoryData['class'])}class="{$categoryData['class']|escape:'htmlall'}"{/if}>
 			{* Options category title *}
 			<legend>
@@ -211,14 +219,6 @@
 			{if isset($categoryData['bottom'])}{$categoryData['bottom']|escape:'htmlall'}{/if}
 			</fieldset><br />
 		{/foreach}
-		{hook h='displayAdminOptions'}
-		{if isset($name_controller)}
-			{capture name=hookName assign=hookName}display{$name_controller|ucfirst}Options{/capture}
-			{hook h=$hookName}
-		{elseif isset($smarty.get.controller)}
-			{capture name=hookName assign=hookName}display{$smarty.get.controller|ucfirst|htmlentities}Options{/capture}
-			{hook h=$hookName}
-		{/if}
 	</form>
 	{/block}
 	{block name="after"}{/block}
@@ -237,6 +237,14 @@
 	{if isset($table_bk) && $table_bk == $table}{capture name='table_count'}{counter name='table_count'}{/capture}{/if}
 	{assign var='table_bk' value=$table scope='parent'}
 	<form action="{$current|escape:'html':'UTF-8'}&amp;token={$token|escape:'html':'UTF-8'}" id="{if $table == null}configuration_form{else}{$table|escape:'htmlall'}_form{/if}{if isset($smarty.capture.table_count) && $smarty.capture.table_count}_{$smarty.capture.table_count|intval}{/if}" method="post" enctype="multipart/form-data" class="form-horizontal">
+		{hook h='displayAdminOptions'}
+		{if isset($name_controller)}
+			{capture name=hookName assign=hookName}display{$name_controller|ucfirst}Options{/capture}
+			{hook h=$hookName}
+		{elseif isset($smarty.get.controller)}
+			{capture name=hookName assign=hookName}display{$smarty.get.controller|ucfirst|htmlentities}Options{/capture}
+			{hook h=$hookName}
+		{/if}
 		{foreach $option_list AS $category => $categoryData}
 			{if isset($categoryData['top'])}{$categoryData['top']|escape:'htmlall'}{/if}
 			<div class="panel {if isset($categoryData['class'])}{$categoryData['class']|escape:'htmlall'}{/if}" id="{$table|escape:'htmlall'}_fieldset_{$category|escape:'htmlall'}">
@@ -560,14 +568,6 @@
 				{/block}
 			</div>
 		{/foreach}
-		{hook h='displayAdminOptions'}
-		{if isset($name_controller)}
-			{capture name=hookName assign=hookName}display{$name_controller|ucfirst}Options{/capture}
-			{hook h=$hookName}
-		{elseif isset($smarty.get.controller)}
-			{capture name=hookName assign=hookName}display{$smarty.get.controller|ucfirst|htmlentities}Options{/capture}
-			{hook h=$hookName}
-		{/if}
 	</form>
 	{/block}
 	{block name="after"}{/block}

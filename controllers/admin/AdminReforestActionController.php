@@ -168,6 +168,8 @@ class AdminReforestActionController extends ModuleAdminController
 		if (Configuration::get('RA_MERCHANT_STATUS') != false)
 			unset($this->toolbar_btn['save']);
 
+		$this->addCss($this->module->getPathUri().'css/configure.css');
+
 		$this->toolbar_btn = array(
 			'preview' => array(
 				'href' => $this->context->link->getAdminLink('AdminReforestActionList'),
@@ -213,12 +215,10 @@ class AdminReforestActionController extends ModuleAdminController
 			}
 		}
 
-		$top = $this->module->getPresentationText();
-
 		if (Configuration::get('RA_MERCHANT_STATUS') && Configuration::get('RA_MERCHANT_STATUS') == ReforestAction::ACCOUNT_OK)
 			$top = $this->module->getActiveText();
 
-		return $top.parent::renderOptions();
+		return parent::renderOptions();
 	}
 
 	public function postProcess()
