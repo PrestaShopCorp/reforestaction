@@ -275,7 +275,8 @@ class ReforestAction extends Module
 			'actionCarrierProcess',
 			'actionPaymentConfirmation',
 			'actionOrderHistoryAddAfter',
-			'actionCartSave'
+			'actionCartSave',
+			'displayAdminReforestActionOptions'
 		);
 
 		$nb_hooks = count($hooks);
