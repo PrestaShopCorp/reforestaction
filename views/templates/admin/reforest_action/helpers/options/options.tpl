@@ -93,7 +93,7 @@
 								{if $field['list']}
 									<select name="{$key|escape:'htmlall'}"{if isset($field['js'])} onchange="{$field['js']|escape:'htmlall'}"{/if} id="{$key|escape:'htmlall'}" {if isset($field['size'])} size="{$field['size']|escape:'htmlall'}"{/if} {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if}>
 										{foreach $field['list'] AS $k => $option}
-											<option value="{$option[$field['identifier']]}"{if $field['value'] == $option[$field['identifier']]} selected="selected"{/if}>{$option['name']|escape:'htmlall'}</option>
+											<option value="{$option[$field['identifier']]|escape:'htmlall'}"{if $field['value'] == $option[$field['identifier']]} selected="selected"{/if}>{$option['name']|escape:'htmlall'}</option>
 										{/foreach}
 									</select>
 								{else if isset($input.empty_message)}
@@ -108,22 +108,22 @@
 								<label class="t" for="{$key|escape:'htmlall'}_off"> {l s='No' mod='reforestaction'}</label>
 							{elseif $field['type'] == 'radio'}
 								{foreach $field['choices'] AS $k => $v}
-									<input type="radio" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}" value="{$k|escape:'htmlall'}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]}{/if}/>
+									<input type="radio" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}" value="{$k|escape:'htmlall'}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]|escape:'htmlall'}{/if}/>
 									<label class="t" for="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}"> {$v|escape:'htmlall'}</label><br />
 								{/foreach}
 								<br />
 							{elseif $field['type'] == 'checkbox'}
 								{foreach $field['choices'] AS $k => $v}
-									<input type="checkbox" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on" value="{$k|intval}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]}{/if}/>
+									<input type="checkbox" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on" value="{$k|intval}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]|escape:'htmlall'}{/if}/>
 									<label class="t" for="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on"> {$v|escape:'htmlall'}</label><br />
 								{/foreach}
 								<br />
 							{elseif $field['type'] == 'text'}
 								<input type="{$field['type']|escape:'htmlall'}"{if isset($field['id'])} id="{$field['id']|escape:'htmlall'}"{/if} size="{if isset($field['size'])}{$field['size']|intval}{else}5{/if}" name="{$key|escape:'htmlall'}" value="{$field['value']|escape:'htmlall':'UTF-8'}" {if isset($field['autocomplete']) && !$field['autocomplete']}autocomplete="off"{/if} {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if}/>
-								{if isset($field['suffix'])}&nbsp;{$field['suffix']|strval}{/if}
+								{if isset($field['suffix'])}&nbsp;{$field['suffix']|strval|escape:'htmlall'}{/if}
 							{elseif $field['type'] == 'password'}
 								<input type="{$field['type']|escape:'htmlall'}"{if isset($field['id'])} id="{$field['id']|escape:'htmlall'}"{/if} size="{if isset($field['size'])}{$field['size']|intval}{else}5{/if}" name="{$key|escape:'htmlall'}" value="" {if isset($field['autocomplete']) && !$field['autocomplete']}autocomplete="off"{/if} />
-								{if isset($field['suffix'])}&nbsp;{$field['suffix']|strval}{/if}
+								{if isset($field['suffix'])}&nbsp;{$field['suffix']|strval|escape:'htmlall'}{/if}
 							{elseif $field['type'] == 'textarea'}
 								<textarea name={$key|escape:'htmlall'} cols="{$field['cols']|escape:'htmlall'}" rows="{$field['rows']|escape:'htmlall'}" {if isset($field['disabled']) && $field['disabled']}readonly="readonly"{/if}>{$field['value']|escape:'htmlall':'UTF-8'}</textarea>
 							{elseif $field['type'] == 'file'}
@@ -152,15 +152,15 @@
 								{elseif $field['type'] == 'textareaLang'}
 									{foreach $field['languages'] AS $id_lang => $value}
 										<div id="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}" style="display: {if $id_lang == $current_id_lang}block{else}none{/if}; float: left;">
-											<textarea rows="{$field['rows']|escape:'htmlall'}" cols="{$field['cols']|intval}"  name="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}">{$value|replace:'\r\n':"\n"}</textarea>
+											<textarea rows="{$field['rows']|escape:'htmlall'}" cols="{$field['cols']|intval}"  name="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}">{$value|replace:'\r\n':"\n"|escape:'htmlall'}</textarea>
 										</div>
 									{/foreach}
 								{elseif $field['type'] == 'selectLang'}
 									{foreach $languages as $language}
 									<div id="{$key|escape:'htmlall'}_{$language.id_lang|escape:'htmlall'}" style="margin-bottom:8px; display: {if $language.id_lang == $current_id_lang}block{else}none{/if}; float: left; vertical-align: top;">
-										<select name="{$key|escape:'htmlall'}_{$language.iso_code|upper}">
+										<select name="{$key|escape:'htmlall'}_{$language.iso_code|upper|escape:'htmlall'}">
 											{foreach $field['list'] AS $k => $v}
-												<option value="{if isset($v.cast)}{$v.cast[$v[$field.identifier]]}{else}{$v[$field.identifier]}{/if}"
+												<option value="{if isset($v.cast)}{$v.cast[$v[$field.identifier]]|escape:'htmlall'}{else}{$v[$field.identifier]|escape:'htmlall'}{/if}"
 													{if $field['value'][$language.id_lang] == $v['name']} selected="selected"{/if}>
 													{$v['name']|escape:'htmlall'}
 												</option>
@@ -341,7 +341,7 @@
 												{if $field['list']}
 													<select {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} class="form-control fixed-width-xxl {if isset($field['class'])}{$field['class']|escape:'htmlall'}{/if}" name="{$key|escape:'htmlall'}"{if isset($field['js'])} onchange="{$field['js']|escape:'htmlall'}"{/if} id="{$key|escape:'htmlall'}" {if isset($field['size'])} size="{$field['size']|escape:'htmlall'}"{/if}>
 														{foreach $field['list'] AS $k => $option}
-															<option value="{$option[$field['identifier']]}"{if $field['value'] == $option[$field['identifier']]} selected="selected"{/if}>{$option['name']|escape:'htmlall'}</option>
+															<option value="{$option[$field['identifier']]|escape:'htmlall'}"{if $field['value'] == $option[$field['identifier']]} selected="selected"{/if}>{$option['name']|escape:'htmlall'}</option>
 														{/foreach}
 													</select>
 												{else if isset($input.empty_message)}
@@ -370,7 +370,7 @@
 													<p class="radio">
 														{strip}
 														<label for="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}">
-															<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="radio" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}" value="{$k|escape:'htmlall'}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]}{/if}/>
+															<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="radio" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}_{$k|escape:'htmlall'}" value="{$k|escape:'htmlall'}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]|escape:'htmlall'}{/if}/>
 														 	{$v|escape:'htmlall'}
 														</label>
 														{/strip}
@@ -383,7 +383,7 @@
 													<p class="checkbox">
 														{strip}
 														<label class="col-lg-3" for="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on">
-															<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="checkbox" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on" value="{$k|intval}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]}{/if}/>
+															<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="checkbox" name="{$key|escape:'htmlall'}" id="{$key|escape:'htmlall'}{$k|escape:'htmlall'}_on" value="{$k|intval}"{if $k == $field['value']} checked="checked"{/if}{if isset($field['js'][$k])} {$field['js'][$k]|escape:'htmlall'}{/if}/>
 														 	{$v|escape:'htmlall'}
 														</label>
 														{/strip}
@@ -395,7 +395,7 @@
 												<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} class="form-control {if isset($field['class'])}{$field['class']|escape:'htmlall'}{/if}" type="{$field['type']|escape:'htmlall'}"{if isset($field['id'])} id="{$field['id']|escape:'htmlall'}"{/if} size="{if isset($field['size'])}{$field['size']|intval}{else}5{/if}" name="{$key|escape:'htmlall'}" value="{$field['value']|escape:'html':'UTF-8'}" {if isset($field['autocomplete']) && !$field['autocomplete']}autocomplete="off"{/if}/>
 												{if isset($field['suffix'])}
 												<span class="input-group-addon">
-													{$field['suffix']|strval}
+													{$field['suffix']|strval|escape:'htmlall'}
 												</span>
 												{/if}
 												{if isset($field['suffix'])}</div>{/if}
@@ -405,7 +405,7 @@
 												<input {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="{$field['type']|escape:'htmlall'}"{if isset($field['id'])} id="{$field['id']|escape:'htmlall'}"{/if} size="{if isset($field['size'])}{$field['size']|intval}{else}5{/if}" name="{$key|escape:'htmlall'}" value=""{if isset($field['autocomplete']) && !$field['autocomplete']} autocomplete="off"{/if} />
 												{if isset($field['suffix'])}
 												<span class="input-group-addon">
-													{$field['suffix']|strval}
+													{$field['suffix']|strval|escape:'htmlall'}
 												</span>
 												{/if}
 												{if isset($field['suffix'])}</div>{/if}
@@ -474,7 +474,7 @@
 													{foreach $field['languages'] AS $id_lang => $value}
 														<div class="row translatable-field lang-{$id_lang|escape:'htmlall'}" {if $id_lang != $current_id_lang}style="display:none;"{/if}>
 															<div id="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}" class="col-lg-9" >
-																<textarea {if isset($field['disabled']) && $field['disabled']}readonly="readonly"{/if} class="textarea-autosize" name="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}">{$value|replace:'\r\n':"\n"}</textarea>
+																<textarea {if isset($field['disabled']) && $field['disabled']}readonly="readonly"{/if} class="textarea-autosize" name="{$key|escape:'htmlall'}_{$id_lang|escape:'htmlall'}">{$value|replace:'\r\n':"\n"|escape:'htmlall'}</textarea>
 															</div>
 															<div class="col-lg-2">
 																<button {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -503,9 +503,9 @@
 											{elseif $field['type'] == 'selectLang'}
 												{foreach $languages as $language}
 													<div id="{$key|escape:'htmlall'}_{$language.id_lang|escape:'htmlall'}" style="display: {if $language.id_lang == $current_id_lang}block{else}none{/if};" class="col-lg-9">
-														<select {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} name="{$key|escape:'htmlall'}_{$language.iso_code|upper}">
+														<select {if isset($field['disabled']) && $field['disabled']}disabled="disabled"{/if} name="{$key|escape:'htmlall'}_{$language.iso_code|upper|escape:'htmlall'}">
 															{foreach $field['list'] AS $k => $v}
-																<option value="{if isset($v.cast)}{$v.cast[$v[$field.identifier]]}{else}{$v[$field.identifier]}{/if}"
+																<option value="{if isset($v.cast)}{$v.cast[$v[$field.identifier]]|escape:'htmlall'}{else}{$v[$field.identifier]|escape:'htmlall'}{/if}"
 																	{if $field['value'][$language.id_lang] == $v['name']} selected="selected"{/if}>
 																	{$v['name']|escape:'htmlall'}
 																</option>
