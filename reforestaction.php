@@ -958,6 +958,10 @@ class ReforestAction extends Module
 
 	public function hookDisplayAdminReforestActionOptions()
 	{
+		$this->context->smarty->assign(array(
+			'module_dir' => $this->_path,
+		));
+
 		return $this->display(__FILE__, 'presentation.tpl');
 	}
 
