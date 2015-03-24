@@ -91,7 +91,7 @@ class ReforestAction extends Module
 		/* Import models */
 		foreach (scandir($path) as $class)
 		{
-			if (is_file($path.$class))
+			if($class != 'index.php' && is_file($path.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
@@ -99,13 +99,12 @@ class ReforestAction extends Module
 					require_once($path.$class_name.'.php');
 			}
 		}
-
 		$path .= 'helper/';
 
 		/* Import helpers */
 		foreach (scandir($path) as $class)
 		{
-			if (is_file($path.$class))
+			if($class != 'index.php' && is_file($path.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
