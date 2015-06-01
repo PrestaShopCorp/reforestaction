@@ -43,7 +43,7 @@
 		<h2 class="panel-heading">{l s='Presentation' mod='reforestaction'}</h2>
 		<div class="col-lg-12 center">
 			<div class="col-lg-3"></div>
-			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="https://i.ytimg.com/vi_webp/LodqEQTUcS4/maxresdefault.webp" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
+			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="{$module_dir|escape:'htmlall'}img/video.png" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
 			<div class="col-lg-3"></div>
 		</div>
 	</fieldset>
