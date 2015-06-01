@@ -90,7 +90,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -104,7 +104,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
