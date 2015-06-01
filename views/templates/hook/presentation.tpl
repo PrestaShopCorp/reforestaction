@@ -38,14 +38,16 @@
 	</div>
 </fieldset>
 
-<fieldset class="panel reforestaction_help">
-	<h2 class="panel-heading">{l s='Presentation' mod='reforestaction'}</h2>
-	<div class="col-lg-12 center">
-		<div class="col-lg-3"></div>
-		<a href="https://www.youtube.com/watch?v=LodqEQTUcS4" class="col-lg-6"><img src="https://i.ytimg.com/vi_webp/LodqEQTUcS4/maxresdefault.webp" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
-		<div class="col-lg-3"></div>
-	</div>
-</fieldset>
+{if isset($display_video) && $display_video}
+	<fieldset class="panel reforestaction_help">
+		<h2 class="panel-heading">{l s='Presentation' mod='reforestaction'}</h2>
+		<div class="col-lg-12 center">
+			<div class="col-lg-3"></div>
+			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="https://i.ytimg.com/vi_webp/LodqEQTUcS4/maxresdefault.webp" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
+			<div class="col-lg-3"></div>
+		</div>
+	</fieldset>
+{/if}
 
 <fieldset class="reforestaction_help panel">
 	<h2 class="panel-heading">{l s='Installation : 5 minutes only' mod='reforestaction'}</h2>

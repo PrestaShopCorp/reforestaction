@@ -337,6 +337,13 @@ class ReforestAction extends Module
 		$this->context->smarty->assign('ra_product_price', $ra_product->getPrice());
 		$this->context->smarty->assign('ra_product_price_wt_tax', $ra_product->getPrice(false, null));
 
+		if ($this->context->language->id == Language::getIdByIso('fr'))
+			$ra_logo = 'logo-fr.png';
+		else
+			$ra_logo = 'logo-en.png';
+
+		$this->context->smarty->assign('ra_logo', $ra_logo);
+
 		return $this->display(__FILE__, 'before-carrier.tpl');
 	}
 
@@ -960,6 +967,7 @@ class ReforestAction extends Module
 	{
 		$this->context->smarty->assign(array(
 			'module_dir' => $this->_path,
+			'display_video' => $this->context->language->id == Language::getIdByIso('fr')
 		));
 
 		return $this->display(__FILE__, 'presentation.tpl');

@@ -30,7 +30,7 @@
 					<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1">
 				</td>
 				<td class="delivery_option_logo">
-					<img src="{$module_dir|escape:'htmlall'}/img/carrier-logo.png" alt="">
+					<img src="{$module_dir|escape:'htmlall'}/img/{$ra_logo|escape:'htmlall'}" alt="">
 				</td>
 				<td class="reforestaction_content">	
 					<p class="ra_title">
