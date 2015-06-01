@@ -54,7 +54,7 @@ class ReforestAction extends Module
 	{
 		$this->name = 'reforestaction';
 		$this->tab = 'advertising_marketing';
-		$this->version = '1.0.0';
+		$this->version = '1.0.3';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -90,7 +90,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -104,7 +104,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -175,7 +175,7 @@ class ReforestAction extends Module
 		$controllers = scandir(dirname(__FILE__).'/controllers/admin');
 		foreach ($controllers as $controller)
 		{
-			if (is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
+			if ($controller != 'index.php' && is_file(dirname(__FILE__).'/controllers/admin/'.$controller))
 			{
 				require_once(dirname(__FILE__).'/controllers/admin/'.$controller);
 				$controller_name = Tools::substr($controller, 0, -4);
@@ -216,7 +216,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				// Check if class_name is an existing Class or not
@@ -243,7 +243,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
@@ -336,6 +336,13 @@ class ReforestAction extends Module
 
 		$this->context->smarty->assign('ra_product_price', $ra_product->getPrice());
 		$this->context->smarty->assign('ra_product_price_wt_tax', $ra_product->getPrice(false, null));
+
+		if ($this->context->language->id == Language::getIdByIso('fr'))
+			$ra_logo = 'logo-fr.png';
+		else
+			$ra_logo = 'logo-en.png';
+
+		$this->context->smarty->assign('ra_logo', $ra_logo);
 
 		return $this->display(__FILE__, 'before-carrier.tpl');
 	}
@@ -575,7 +582,7 @@ class ReforestAction extends Module
 		$product->indexed = false;
 		$product->reference = 'reforestaction';
 		$product->redirect_type = '404';
-		$product->price = 0.99 / (1 + $product->getTaxesRate() / 100);
+		$product->price = sprintf('%0.9f', (0.99 / (1 + $product->getTaxesRate() / 100)));
 
 		// Save product
 		$result = $product->save();
@@ -958,6 +965,11 @@ class ReforestAction extends Module
 
 	public function hookDisplayAdminReforestActionOptions()
 	{
+		$this->context->smarty->assign(array(
+			'module_dir' => $this->_path,
+			'display_video' => $this->context->language->id == Language::getIdByIso('fr')
+		));
+
 		return $this->display(__FILE__, 'presentation.tpl');
 	}
 

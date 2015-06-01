@@ -22,6 +22,33 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
+<fieldset class="reforestaction_help reforestaction_intro panel">
+	<h2 class="panel-heading">{l s='Reforest\'Action' mod='reforestaction'}</h2>
+	<div class="col-lg-2 text-center">
+		<img src="{$module_dir|escape:'htmlall'}img/logo-full.png" alt="Reforest'Action logo" width="200px" />
+	</div>
+	<div class="col-lg-10">
+		<dl>
+			<dt>{l s='Attract more clients on social networks : ' mod='reforestaction'}</dt>
+			<dd>{l s='Your customers can share that they just planted a tree thanks to your website.' mod='reforestaction'}</dd>
+			<dt>{l s='Improve your website overall image : ' mod='reforestaction'}</dt>
+			<dd>{l s='More than two thirds of consumers claim that to be "proud to buy a product that is eco-friendly or good for the planet"' mod='reforestaction'}</dd>
+			<dt>{l s='No costs, installation in a just a few clicks' mod='reforestaction'}</dt>
+		</dl>
+	</div>
+</fieldset>
+
+{if isset($display_video) && $display_video}
+	<fieldset class="panel reforestaction_help">
+		<h2 class="panel-heading">{l s='Presentation' mod='reforestaction'}</h2>
+		<div class="col-lg-12 center">
+			<div class="col-lg-3"></div>
+			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="{$module_dir|escape:'htmlall'}img/video.png" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
+			<div class="col-lg-3"></div>
+		</div>
+	</fieldset>
+{/if}
+
 <fieldset class="reforestaction_help panel">
 	<h2 class="panel-heading">{l s='Installation : 5 minutes only' mod='reforestaction'}</h2>
 	<ul>
