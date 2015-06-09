@@ -216,7 +216,7 @@ class AdminReforestActionController extends ModuleAdminController
 		}
 
 		if (Configuration::get('RA_MERCHANT_STATUS') && Configuration::get('RA_MERCHANT_STATUS') == ReforestAction::ACCOUNT_OK)
-			$top = $this->module->getActiveText();
+			$this->module->getActiveText();
 
 		return parent::renderOptions();
 	}

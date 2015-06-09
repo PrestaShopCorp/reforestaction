@@ -54,7 +54,7 @@ class ReforestAction extends Module
 	{
 		$this->name = 'reforestaction';
 		$this->tab = 'advertising_marketing';
-		$this->version = '1.0.1';
+		$this->version = '1.0.2';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -304,8 +304,8 @@ class ReforestAction extends Module
 		if (!$this->active)
 			return;
 
-		$this->context->controller->addCss($this->getPathUri().'css/'.$this->name.'.css');
-		$this->context->controller->addJs($this->getPathUri().'js/'.$this->name.'.js');
+		$this->context->controller->addCss($this->getPathUri().'views/css/'.$this->name.'.css');
+		$this->context->controller->addJs($this->getPathUri().'views/js/'.$this->name.'.js');
 		$this->context->controller->addJqueryPlugin('fancybox');
 	}
 
@@ -343,6 +343,10 @@ class ReforestAction extends Module
 			$ra_logo = 'logo-en.png';
 
 		$this->context->smarty->assign('ra_logo', $ra_logo);
+		$this->context->smarty->assign('model', ReforestActionModel::getInstanceByIdCart($this->context->cart->id));
+		$this->context->smarty->assign('id_reforestaction', $ra_product->id);
+		$this->context->smarty->assign('ps_version_15', version_compare(_PS_VERSION_, '1.6', '<'));
+		$this->context->smarty->assign('reforestaction_link', $this->getPathUri().'ajax/call.php');
 
 		return $this->display(__FILE__, 'before-carrier.tpl');
 	}
@@ -354,7 +358,6 @@ class ReforestAction extends Module
 	 */
 	public function hookActionCarrierProcess($params)
 	{
-
 		if (!$this->active || !$this->accountIsActive())
 			return;
 
@@ -621,7 +624,7 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 	private function copyImage($product, $image, $method = 'auto', $img_name = 'logo.png')
 	{
 		$tmp_name = _PS_TMP_IMG_DIR_.$img_name;
-		copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
+		Tools::copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));

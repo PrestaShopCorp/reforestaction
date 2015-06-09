@@ -1,0 +1,31 @@
+.process-icon-configure
+{
+	background-image: url('../img/configuration.png');
+}
+
+fieldset.reforestaction_help + fieldset
+{
+	margin-top: 20px;
+}
+
+fieldset.reforestaction_help > h2
+{
+	margin-top: 0px;
+}
+
+fieldset.reforestaction_help > ul > li
+{
+	line-height: 20px;
+}
+
+fieldset.reforestaction_intro > div
+{
+	float: left;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+fieldset.reforestaction_intro > div > dl > dt
+{
+	font-weight: bold;
+}

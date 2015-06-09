@@ -25,7 +25,7 @@
 <fieldset class="reforestaction_help reforestaction_intro panel">
 	<h2 class="panel-heading">{l s='Reforest\'Action' mod='reforestaction'}</h2>
 	<div class="col-lg-2 text-center">
-		<img src="{$module_dir|escape:'htmlall'}img/logo-full.png" alt="Reforest'Action logo" width="200px" />
+		<img src="{$module_dir|escape:'htmlall':'UTF-8'}img/logo-full.png" alt="Reforest'Action logo" width="200px" />
 	</div>
 	<div class="col-lg-10">
 		<dl>

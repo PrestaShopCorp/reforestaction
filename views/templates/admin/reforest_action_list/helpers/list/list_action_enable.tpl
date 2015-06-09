@@ -23,7 +23,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 {if version_compare($smarty.const._PS_VERSION_, '1.6', '<')}
-	<a href="{$url_enable|escape:'htmlall'}" {if isset($confirm)}onclick="return confirm('{$confirm|escape:'htmlall'}');"{/if} title="{if $enabled}{l s='Enabled' mod='reforestaction'}{else}{l s='Disabled' mod='reforestaction'}{/if}">
+	<a href="{$url_enable|escape:'htmlall':'UTF-8'}" {if isset($confirm)}onclick="return confirm('{$confirm|escape:'htmlall':'UTF-8'}');"{/if} title="{if $enabled}{l s='Enabled' mod='reforestaction'}{else}{l s='Disabled' mod='reforestaction'}{/if}">
 		<img src="../img/admin/{if $enabled}enabled.gif{else}disabled.gif{/if}" alt="{if $enabled}{l s='Enabled' mod='reforestaction'}{else}{l s='Disabled' mod='reforestaction'}{/if}" />
 	</a>
 {else}
