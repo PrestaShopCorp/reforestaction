@@ -24,13 +24,13 @@
 *}
 <div class="delivery_option">
 	<div>
-		<table id="reforestaction_table" class="resume">
+		<table id="reforestaction_table" class="resume{if isset($opc) && $opc} opc{/if}{if isset($ps_version_15) && $ps_version_15} ps15{/if}">
 			<tr>
-				<td class="delivery_option_radio">
-					<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1">
+				<td{if isset($ps_version_15) && !$ps_version_15} class="delivery_option_radio"{/if}>
+					<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1"{if $model && $model->id} checked="checked"{/if}>
 				</td>
 				<td class="delivery_option_logo">
-					<img src="{$module_dir|escape:'htmlall'}/img/carrier-logo.png" alt="">
+					<img src="{$module_dir|escape:'htmlall':'UTF-8'}/img/{$ra_logo|escape:'htmlall':'UTF-8'}" alt="">
 				</td>
 				<td class="reforestaction_content">	
 					<p class="ra_title">
@@ -39,8 +39,8 @@
 					<p>
 						{l s='I plant a tree with Reforest\'Action to compensate CO2\'s emissions from my purchase !' mod='reforestaction'} <a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" class="iframe" rel="nofollow">{l s='Learn more.' mod='reforestaction'}</a>
 					</p>
-					<p class="checkbox newsletter">
-						<input type="checkbox" name="reforestaction_newsletter" id="reforestaction_newsletter" value="1">
+					<p class="checkbox newsletter"{if $model && $model->id} style="display: block;"{/if}>
+						<input type="checkbox" name="reforestaction_newsletter" id="reforestaction_newsletter" value="1"{if $model && $model->newsletter} checked="checked"{/if}>
 						<label for="reforestaction_newsletter">
 							{l s='Receive the monthly newsletter Reforest\'Action for news of my tree' mod='reforestaction'}
 						</label>
@@ -57,3 +57,11 @@
 		</table>
 	</div>
 </div>
+<script type="text/javascript">
+	{if isset($opc) && $opc}
+		var reforestaction_link = '{$reforestaction_link|escape:'htmlall':'UTF-8'}';
+		var id_reforestaction = '{$id_reforestaction|escape:'htmlall':'UTF-8'}';
+	{/if}
+	var ps_version_15 = '{$ps_version_15|escape:'htmlall':'UTF-8'}';
+	var html_reference = '{l s='Reference:' mod='reforestaction'}';
+</script>
