@@ -35,6 +35,8 @@ class ReforestAction extends Module
 	const ACCOUNT_OK      = 3;
 	const ACCOUNT_WAITING_SLIMPAY = 4;
 
+	const UPDATE_CART = false;
+
 	/**
 	 * Module link in BO
 	 * @var String
