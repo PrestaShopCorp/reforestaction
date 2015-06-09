@@ -626,7 +626,7 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 	private function copyImage($product, $image, $method = 'auto', $img_name = 'logo.png')
 	{
 		$tmp_name = _PS_TMP_IMG_DIR_.$img_name;
-		Tools::copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
+		copy($this->getLocalPath().'views'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));
