@@ -575,7 +575,7 @@ class ReforestAction extends Module
 		$product->indexed = false;
 		$product->reference = 'reforestaction';
 		$product->redirect_type = '404';
-		$product->price = 0.99 / (1 + $product->getTaxesRate() / 100);
+		$product->price = sprintf('%0.9f', (0.99 / (1 + $product->getTaxesRate() / 100)));
 
 		// Save product
 		$result = $product->save();
