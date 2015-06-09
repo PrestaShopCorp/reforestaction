@@ -90,7 +90,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -104,7 +104,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -175,7 +175,7 @@ class ReforestAction extends Module
 		$controllers = scandir(dirname(__FILE__).'/controllers/admin');
 		foreach ($controllers as $controller)
 		{
-			if (is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
+			if ($controller != 'index.php' && is_file(dirname(__FILE__).'/controllers/admin/'.$controller))
 			{
 				require_once(dirname(__FILE__).'/controllers/admin/'.$controller);
 				$controller_name = Tools::substr($controller, 0, -4);
@@ -216,7 +216,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				// Check if class_name is an existing Class or not
@@ -243,7 +243,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
