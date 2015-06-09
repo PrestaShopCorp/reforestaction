@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
         <module>
             <name>reforestaction</name>
-            <displayName><![CDATA[Purchase responsable]]></displayName>
-            <version><![CDATA[1.0.0]]></version>
-            <description><![CDATA[With Reforest&#039;action, your customers plant a tree in the world to offset the CO2 emissions of their purchases. They do this for the planet and allow you to increase your visibility on social networks.]]></description>
+            <displayName><![CDATA[Achat responsable]]></displayName>
+            <version><![CDATA[1.0.2]]></version>
+            <description><![CDATA[Avec Reforest&#039;action, vos clients plantent un arbre dans le monde pour compenser les &eacute;missions de CO2 de leurs achats. Ils agissent ainsi pour la plan&egrave;te et vous gagnez en visibilit&eacute; sur les r&eacute;seaux sociaux. ]]></description>
             <author><![CDATA[202-ecommerce]]></author>
             <tab><![CDATA[advertising_marketing]]></tab>
             <is_configurable>1</is_configurable>

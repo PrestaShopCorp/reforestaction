@@ -22,5 +22,5 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
-<p class="p1">{l s='Your friend planted a tree by buying on' mod='reforestaction'}<a href="{$context->shop->getBaseURL()|escape:'htmlall'}">{$shop_name|escape:'htmlall'}</a>. {l s='Thanks to the option' mod='reforestaction'} <a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" target="_blank")><i>{l s='Buy Responsible' mod='reforestaction'}</i></a> {l s='on this site, you can also compensate the CO2 emissions of your purchases by planting a tree' mod='reforestaction'}.<br></p>
+<p class="p1">{l s='Your friend planted a tree by buying on' mod='reforestaction'}<a href="{$context->shop->getBaseURL()|escape:'htmlall':'UTF-8'}">{$shop_name|escape:'htmlall':'UTF-8'}</a>. {l s='Thanks to the option' mod='reforestaction'} <a href="http://www.reforestaction.com/presentation-projet-reforestaction.html" target="_blank")><i>{l s='Buy Responsible' mod='reforestaction'}</i></a> {l s='on this site, you can also compensate the CO2 emissions of your purchases by planting a tree' mod='reforestaction'}.<br></p>
 <div class=" reforestaction_access"><img alt="600" src="http://www.reforestaction.com/img/content/Diplome-plantation-V3.png" height="400" width="600" /></div>

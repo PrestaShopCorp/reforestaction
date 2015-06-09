@@ -35,6 +35,8 @@ class ReforestAction extends Module
 	const ACCOUNT_OK      = 3;
 	const ACCOUNT_WAITING_SLIMPAY = 4;
 
+	const UPDATE_CART = false;
+
 	/**
 	 * Module link in BO
 	 * @var String
@@ -54,7 +56,7 @@ class ReforestAction extends Module
 	{
 		$this->name = 'reforestaction';
 		$this->tab = 'advertising_marketing';
-		$this->version = '1.0.0';
+		$this->version = '1.0.2';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -90,7 +92,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -104,7 +106,7 @@ class ReforestAction extends Module
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
-				if (!class_exists($class_name) && $class_name != 'index')
+				if ($class_name != 'index' && !class_exists($class_name))
 					require_once($path.$class_name.'.php');
 			}
 		}
@@ -175,7 +177,7 @@ class ReforestAction extends Module
 		$controllers = scandir(dirname(__FILE__).'/controllers/admin');
 		foreach ($controllers as $controller)
 		{
-			if (is_file(dirname(__FILE__).'/controllers/admin/'.$controller) && $controller != 'index.php')
+			if ($controller != 'index.php' && is_file(dirname(__FILE__).'/controllers/admin/'.$controller))
 			{
 				require_once(dirname(__FILE__).'/controllers/admin/'.$controller);
 				$controller_name = Tools::substr($controller, 0, -4);
@@ -216,7 +218,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				// Check if class_name is an existing Class or not
@@ -243,7 +245,7 @@ class ReforestAction extends Module
 		$classes = scandir(dirname(__FILE__).'/classes');
 		foreach ($classes as $class)
 		{
-			if (is_file(dirname(__FILE__).'/classes/'.$class))
+			if ($class != 'index.php' && is_file(dirname(__FILE__).'/classes/'.$class))
 			{
 				$class_name = Tools::substr($class, 0, -4);
 				//Check if class_name is an existing Class or not
@@ -304,8 +306,8 @@ class ReforestAction extends Module
 		if (!$this->active)
 			return;
 
-		$this->context->controller->addCss($this->getPathUri().'css/'.$this->name.'.css');
-		$this->context->controller->addJs($this->getPathUri().'js/'.$this->name.'.js');
+		$this->context->controller->addCss($this->getPathUri().'views/css/'.$this->name.'.css');
+		$this->context->controller->addJs($this->getPathUri().'views/js/'.$this->name.'.js');
 		$this->context->controller->addJqueryPlugin('fancybox');
 	}
 
@@ -337,6 +339,17 @@ class ReforestAction extends Module
 		$this->context->smarty->assign('ra_product_price', $ra_product->getPrice());
 		$this->context->smarty->assign('ra_product_price_wt_tax', $ra_product->getPrice(false, null));
 
+		if ($this->context->language->id == Language::getIdByIso('fr'))
+			$ra_logo = 'logo-fr.png';
+		else
+			$ra_logo = 'logo-en.png';
+
+		$this->context->smarty->assign('ra_logo', $ra_logo);
+		$this->context->smarty->assign('model', ReforestActionModel::getInstanceByIdCart($this->context->cart->id));
+		$this->context->smarty->assign('id_reforestaction', $ra_product->id);
+		$this->context->smarty->assign('ps_version_15', version_compare(_PS_VERSION_, '1.6', '<'));
+		$this->context->smarty->assign('reforestaction_link', $this->getPathUri().'ajax/call.php');
+
 		return $this->display(__FILE__, 'before-carrier.tpl');
 	}
 
@@ -347,7 +360,6 @@ class ReforestAction extends Module
 	 */
 	public function hookActionCarrierProcess($params)
 	{
-
 		if (!$this->active || !$this->accountIsActive())
 			return;
 
@@ -526,37 +538,17 @@ class ReforestAction extends Module
 			{
 				$product->name[$id_lang]        = '1 arbre planté avec Reforest\'Action';
 				$product->description[$id_lang] = '
-					<p>
-						En cochant l\'option <strong>Achat Responsable</strong> de Reforest\'Action, 
-						<strong>vous plantez un arbre</strong>
-						sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.
-					</p>
-				
-					<p>
-						1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, 
-						soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.
-					</p>
-					<p>
-						Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> 
-						et la présentation du projet de reforestation auquel vous avez participé.
-					</p>';
+					<p>Un arbre est planté sur un projet de reforestation Reforest\'Action pour compenser les émissions de CO2 de votre achat sur ce site Internet.<br>
+1 arbre stocke en moyenne 150 kg de CO2, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.
+<br>Suite à votre achat, vous recevrez par email un certificat de plantation.</p>';
 			}
 			else
 			{
 				$product->name[$id_lang]        = '1 tree planted with Reforest\'Action';
 				$product->description[$id_lang] = '
-				<p>
-					By selecting the option to <strong>Purchase Responsable</strong> Reforest\'Action, 
-					<strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.
-				</p>
-				<p>
-					1 tree stores on average 150 kg of CO2 during its first 30 years of life, 
-					more than the C02 emissions from the production of most goods purchased over the Internet.
-				</p>
-				<p>
-					After your purchase you will receive by email a <strong>certificate of planting</strong> 
-					and the presentation of the reforestation project in which you participated.
-				</p>';
+				<p>A tree is planted on a Reforest’Action project to compensate the CO2 emissions of the product purchased.<br>
+One tree sequesters in average 150kg of CO2, more than the manufacturing emissions of most products sold on the web.<br>
+Following your purchase, you will receive a plantation certificate by email.</p>';
 			}
 
 			// Link
@@ -575,7 +567,7 @@ class ReforestAction extends Module
 		$product->indexed = false;
 		$product->reference = 'reforestaction';
 		$product->redirect_type = '404';
-		$product->price = 0.99 / (1 + $product->getTaxesRate() / 100);
+		$product->price = sprintf('%0.9f', (0.99 / (1 + $product->getTaxesRate() / 100)));
 
 		// Save product
 		$result = $product->save();
@@ -634,7 +626,7 @@ class ReforestAction extends Module
 	private function copyImage($product, $image, $method = 'auto', $img_name = 'logo.png')
 	{
 		$tmp_name = _PS_TMP_IMG_DIR_.$img_name;
-		copy($this->getLocalPath().'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
+		copy($this->getLocalPath().'views'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.$img_name, $tmp_name);
 
 		if (!$new_path = $image->getPathForCreation())
 			return array('error' => Tools::displayError('An error occurred during new folder creation'));
@@ -958,6 +950,11 @@ class ReforestAction extends Module
 
 	public function hookDisplayAdminReforestActionOptions()
 	{
+		$this->context->smarty->assign(array(
+			'module_dir' => $this->_path,
+			'display_video' => $this->context->language->id == Language::getIdByIso('fr')
+		));
+
 		return $this->display(__FILE__, 'presentation.tpl');
 	}
 
