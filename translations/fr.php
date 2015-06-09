@@ -99,6 +99,12 @@ $_MODULE['<{reforestaction}prestashop>before-carrier_f990e553cdc4c29c2efffba33e0
 $_MODULE['<{reforestaction}prestashop>before-carrier_5622387d1108ce77e8c190748184c6bc'] = 'Recevoir la newsletter mensuelle de Reforest\'Action pour avoir des nouvelles de mon arbre';
 $_MODULE['<{reforestaction}prestashop>before-carrier_e2e79605fc9450ec17957cf0e910f5c6'] = 'TTC';
 $_MODULE['<{reforestaction}prestashop>before-carrier_887ee91702c962a70b87cbef07bbcaec'] = 'HT';
+$_MODULE['<{reforestaction}prestashop>presentation_29813e0029dfe072a3300cfa26f9eeab'] = 'Reforest\'Action';
+$_MODULE['<{reforestaction}prestashop>presentation_1b9e8a6b42beead0afcc03d74fa7e4a6'] = 'Attirez de nouveaux prospects via les réseaux sociaux :';
+$_MODULE['<{reforestaction}prestashop>presentation_9221e349f6f9f195269180fa18314f0d'] = 'Vos clients informent leurs amis sur Facebook et Twitter qu’ils ont planté un arbre grâce à vous.';
+$_MODULE['<{reforestaction}prestashop>presentation_c9cd808f7207e171105bab54995ceee4'] = 'Une meilleure image de votre site internet :';
+$_MODULE['<{reforestaction}prestashop>presentation_deeb46ed4ee9f5ff22d4a05a8a5bd4eb'] = 'Près de deux tiers des consommateurs disent avoir un « sentiment de fierté quand ils achètent un produit bon pour l’environnement ou socialement responsable ». ';
+$_MODULE['<{reforestaction}prestashop>presentation_1e8f4ad8071166663840304eeedd6c91'] = 'Aucun frais, une installation en quelques clics.';
 $_MODULE['<{reforestaction}prestashop>presentation_18da0e4e7a934b4dfd3e2e44120ca196'] = 'Installation du module : 5 minutes montre en main';
 $_MODULE['<{reforestaction}prestashop>presentation_d45996dbf426abe134632f68a4d7d1fd'] = '1 – Complétez le formulaire ci-dessous ';
 $_MODULE['<{reforestaction}prestashop>presentation_5b4f1e768ba513e4bd98ec18f3389bb2'] = '2 – Complétez le mandat de prélèvement Slimpay';

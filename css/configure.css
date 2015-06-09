@@ -17,3 +17,15 @@ fieldset.reforestaction_help > ul > li
 {
 	line-height: 20px;
 }
+
+fieldset.reforestaction_intro > div
+{
+	float: left;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+fieldset.reforestaction_intro > div > dl > dt
+{
+	font-weight: bold;
+}

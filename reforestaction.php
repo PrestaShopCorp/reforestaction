@@ -54,7 +54,7 @@ class ReforestAction extends Module
 	{
 		$this->name = 'reforestaction';
 		$this->tab = 'advertising_marketing';
-		$this->version = '1.0.0';
+		$this->version = '1.0.1';
 		$this->author = '202-ecommerce';
 
 		parent::__construct();
@@ -958,6 +958,10 @@ class ReforestAction extends Module
 
 	public function hookDisplayAdminReforestActionOptions()
 	{
+		$this->context->smarty->assign(array(
+			'module_dir' => $this->_path,
+		));
+
 		return $this->display(__FILE__, 'presentation.tpl');
 	}
 
