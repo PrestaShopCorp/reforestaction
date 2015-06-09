@@ -168,7 +168,7 @@ class AdminReforestActionController extends ModuleAdminController
 		if (Configuration::get('RA_MERCHANT_STATUS') != false)
 			unset($this->toolbar_btn['save']);
 
-		$this->addCss($this->module->getPathUri().'css/configure.css');
+		$this->addCss($this->module->getPathUri().'views/css/configure.css');
 
 		$this->toolbar_btn = array(
 			'preview' => array(
@@ -190,7 +190,7 @@ class AdminReforestActionController extends ModuleAdminController
 	 */
 	public function renderOptions()
 	{
-		$this->addJs($this->module->getLocalPath().'js/admin.js');
+		$this->addJs($this->module->getLocalPath().'views/js/admin.js');
 
 		$current_status = Configuration::get('RA_MERCHANT_STATUS');
 

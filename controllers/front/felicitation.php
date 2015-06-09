@@ -49,6 +49,6 @@ class ReforestactionFelicitationModuleFrontController extends ModuleFrontControl
 	public function setMedia()
 	{
 		parent::setMedia();
-		$this->addCSS(__PS_BASE_URI__.'modules/css/felicitation.css');
+		$this->addCSS($this->module->getPathUri().'views/css/felicitation.css');
 	}
 }

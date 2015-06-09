@@ -25,7 +25,7 @@
 <fieldset class="reforestaction_help reforestaction_intro panel">
 	<h2 class="panel-heading">{l s='Reforest\'Action' mod='reforestaction'}</h2>
 	<div class="col-lg-2 text-center">
-		<img src="{$module_dir|escape:'htmlall':'UTF-8'}img/logo-full.png" alt="Reforest'Action logo" width="200px" />
+		<img src="{$module_dir|escape:'htmlall':'UTF-8'}views/img/logo-full.png" alt="Reforest'Action logo" width="200px" />
 	</div>
 	<div class="col-lg-10">
 		<dl>
@@ -43,7 +43,7 @@
 		<h2 class="panel-heading">{l s='Presentation' mod='reforestaction'}</h2>
 		<div class="col-lg-12 center">
 			<div class="col-lg-3"></div>
-			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="{$module_dir|escape:'htmlall':'UTF-8'}img/video.png" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
+			<a href="http://www.videops.reforestaction.com" class="col-lg-6"><img src="{$module_dir|escape:'htmlall':'UTF-8'}views/img/video.png" alt="{l s='Youtube' mod='reforestaction'}" class="col-lg-12"/></a>
 			<div class="col-lg-3"></div>
 		</div>
 	</fieldset>

@@ -30,7 +30,7 @@
 					<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1"{if $model && $model->id} checked="checked"{/if}>
 				</td>
 				<td class="delivery_option_logo">
-					<img src="{$module_dir|escape:'htmlall':'UTF-8'}/img/{$ra_logo|escape:'htmlall':'UTF-8'}" alt="">
+					<img src="{$module_dir|escape:'htmlall':'UTF-8'}views/img/{$ra_logo|escape:'htmlall':'UTF-8'}" alt="">
 				</td>
 				<td class="reforestaction_content">	
 					<p class="ra_title">
