@@ -538,6 +538,21 @@ class ReforestAction extends Module
 			{
 				$product->name[$id_lang]        = '1 arbre planté avec Reforest\'Action';
 				$product->description[$id_lang] = '
+					<p>
+						En cochant l\'option <strong>Achat Responsable</strong> de Reforest\'Action, 
+						<strong>vous plantez un arbre</strong>
+						sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.
+					</p>
+				
+					<p>
+						1 arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, 
+						soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.
+					</p>
+					<p>
+						Suite à votre achat, vous recevrez par email un <strong>certificat de plantation</strong> 
+						et la présentation du projet de reforestation auquel vous avez participé.
+					</p>';
+				$product->description_short[$id_lang] = '
 					<p>Un arbre est planté sur un projet de reforestation Reforest\'Action pour compenser les émissions de CO2 de votre achat sur ce site Internet.<br>
 1 arbre stocke en moyenne 150 kg de CO2, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.
 <br>Suite à votre achat, vous recevrez par email un certificat de plantation.</p>';
@@ -546,6 +561,19 @@ class ReforestAction extends Module
 			{
 				$product->name[$id_lang]        = '1 tree planted with Reforest\'Action';
 				$product->description[$id_lang] = '
+				<p>
+					By selecting the option to <strong>Purchase Responsable</strong> Reforest\'Action, 
+					<strong>you plant a tree</strong> on one of our reforestation projects to offset the CO2 emissions of your purchase on this website.
+				</p>
+				<p>
+					1 tree stores on average 150 kg of CO2 during its first 30 years of life, 
+					more than the C02 emissions from the production of most goods purchased over the Internet.
+				</p>
+				<p>
+					After your purchase you will receive by email a <strong>certificate of planting</strong> 
+					and the presentation of the reforestation project in which you participated.
+				</p>';
+				$product->description_short[$id_lang] = '
 				<p>A tree is planted on a Reforest’Action project to compensate the CO2 emissions of the product purchased.<br>
 One tree sequesters in average 150kg of CO2, more than the manufacturing emissions of most products sold on the web.<br>
 Following your purchase, you will receive a plantation certificate by email.</p>';

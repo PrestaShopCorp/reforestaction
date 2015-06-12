@@ -27,6 +27,7 @@
 		<table id="reforestaction_table" class="resume{if isset($opc) && $opc} opc{/if}{if isset($ps_version_15) && $ps_version_15} ps15{/if}">
 			<tr>
 				<td{if isset($ps_version_15) && !$ps_version_15} class="delivery_option_radio"{/if}>
+					{if isset($opc) && $opc}<div class="loader_ajax"></div>{/if}
 					<input type="checkbox" name="reforestaction" id="reforestaction_checkbox" value="1"{if $model && $model->id} checked="checked"{/if}>
 				</td>
 				<td class="delivery_option_logo">

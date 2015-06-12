@@ -16,20 +16,25 @@
     width: 100%;
 }
 
+#reforestaction_table .loader_ajax {
+    display: none;
+    background: url('../img/loader.gif') center center no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
 #reforestaction_table:not(.ps15) td {
     border: 1px solid #BDC2C9;
 }
 
-#reforestaction_table.ps15 td 
-{
-	padding: 5px;
+#reforestaction_table.ps15 td {
+    padding: 5px;
 }
 
 #reforestaction_table.ps15 td input,
-#reforestaction_table.ps15 td label
-{
-	display: inline-block;
-	vertical-align: middle;
+#reforestaction_table.ps15 td label {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 #reforestaction_table td p {

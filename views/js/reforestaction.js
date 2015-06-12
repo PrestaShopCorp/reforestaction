@@ -42,7 +42,7 @@ $(function(){
 				del = true;
 		}
 
-		reforestActionCall($(this), true, true);
+		reforestActionCall($(this), true, del);
 	});
 
 	$(document).on('click', '#reforestaction_newsletter', function(e){
@@ -54,6 +54,9 @@ function reforestActionCall(el, redirect, del)
 {
 	if ($('body').attr('id') != 'order-opc')
 		return false;
+
+	$('#reforestaction_checkbox').hide();
+	$('#reforestaction_table .loader_ajax').show();
 
 	if (el.parents('#reforestaction_table').hasClass('opc'))
 	{
@@ -78,7 +81,10 @@ function reforestActionCall(el, redirect, del)
 						$('.cart_quantity_delete[id^='+id_reforestaction+'_0_0]').click();
 					}
 					else
+					{
 						window.location.reload();
+						return;
+					}
 				}
 			}
 			else
@@ -244,7 +250,10 @@ function reforestActionCall(el, redirect, del)
 
 				if (typeof(updatePaymentMethodsDisplay) !== 'undefined')
 					updatePaymentMethodsDisplay();
-				}
+			}
+
+			$('#reforestaction_checkbox').show();
+			$('#reforestaction_table .loader_ajax').hide();
 		});
 		
 	}
