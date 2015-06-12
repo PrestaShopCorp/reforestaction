@@ -33,5 +33,6 @@ if (!defined('_PS_VERSION_'))
 */
 function upgrade_module_1_0_2($object)
 {
+	$object->createRaProduct(true); // For update
 	return $object->registerHook('displayAdminReforestActionOptions');
 }
