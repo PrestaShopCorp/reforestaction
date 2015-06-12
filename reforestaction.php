@@ -583,8 +583,6 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 			$product->link_rewrite[$id_lang] = Tools::link_rewrite($product->name[$id_lang]);
 		}
 
-		$product->description_short = $product->description;
-
 		// Get home category
 		$id_category = (int)Configuration::get('PS_HOME_CATEGORY');
 		// Default category
