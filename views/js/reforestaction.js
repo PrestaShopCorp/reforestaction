@@ -25,8 +25,20 @@
 */
 $(function(){
 
-	$('.fancybox').fancybox();
-	$(document).off('click').on('click', '#reforestaction_checkbox', function(e){
+	/*
+	$('.open-popin').click(function()
+	{
+		$('#popin,.overlay-popin').addClass('active');
+		$('body').addClass('popin-active');
+	});
+
+	$('.close-popin').click(function()
+	{
+		$('#popin,.overlay-popin').removeClass('active');
+		$('body').removeClass('popin-active');
+	});*/
+
+	$('#reforestaction_checkbox').off('click').on('click', function(e){
 		if (!ps_version_15)
 			e.preventDefault();
 		var del = false;
@@ -38,16 +50,21 @@ $(function(){
 		{
 			$('#reforestaction_table .checkbox.newsletter').slideUp();
 
-			if ($('.cart_quantity_delete[id^='+id_reforestaction+'_0_0]').length)
-				del = true;
+			if ($('body').attr('id') != 'order-opc')
+			{
+				if ($('.cart_quantity_delete[id^='+id_reforestaction+'_0_0]').length)
+					del = true;
+			}
 		}
 
 		reforestActionCall($(this), true, del);
 	});
 
-	$(document).on('click', '#reforestaction_newsletter', function(e){
+	$('#reforestaction_newsletter').on('click', function(e){
 		reforestActionCall($(this), false);
 	});
+
+	$('.open_popin').fancybox();
 });
 
 function reforestActionCall(el, redirect, del)

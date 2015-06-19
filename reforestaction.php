@@ -306,9 +306,9 @@ class ReforestAction extends Module
 		if (!$this->active)
 			return;
 
+		$this->context->controller->addJqueryPlugin('fancybox');
 		$this->context->controller->addCss($this->getPathUri().'views/css/'.$this->name.'.css');
 		$this->context->controller->addJs($this->getPathUri().'views/js/'.$this->name.'.js');
-		$this->context->controller->addJqueryPlugin('fancybox');
 	}
 
 
@@ -703,7 +703,6 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 
 			if (is_object($result) || !is_null($result))
 			{
-
 				// if no error
 				if (!isset($result->error) && $result->status != $current_status)
 				{
@@ -733,7 +732,10 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 						}
 					}
 				}
-				Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
+
+				if ($result->status)
+					Configuration::updateValue('RA_MERCHANT_STATUS', $result->status);
+				
 				Configuration::updateValue('RA_LAST_CHECK', time());
 			}
 			else
