@@ -903,8 +903,8 @@ Following your purchase, you will receive a plantation certificate by email.</p>
 				'name' => $this->l('Shoes, accessories'),
 			),
 			array(
-				'key' => 'Childrens',
-				'name' => $this->l('Childrens'),
+				'key' => 'Children',
+				'name' => $this->l('Children'),
 			),
 			array(
 				'key' => 'Food, drinks',

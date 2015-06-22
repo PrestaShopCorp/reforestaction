@@ -25,22 +25,7 @@
 */
 $(function(){
 
-	/*
-	$('.open-popin').click(function()
-	{
-		$('#popin,.overlay-popin').addClass('active');
-		$('body').addClass('popin-active');
-	});
-
-	$('.close-popin').click(function()
-	{
-		$('#popin,.overlay-popin').removeClass('active');
-		$('body').removeClass('popin-active');
-	});*/
-
 	$('#reforestaction_checkbox').off('click').on('click', function(e){
-		if (!ps_version_15)
-			e.preventDefault();
 		var del = false;
 		if ($(this).is(':checked'))
 		{
