@@ -22,7 +22,7 @@ $_MODULE['<{reforestaction}prestashop>reforestaction_1da3b72fcb7051c62e0ec4931dd
 $_MODULE['<{reforestaction}prestashop>reforestaction_a026149882c955b32d04ba9438875732'] = 'Maison, décoration';
 $_MODULE['<{reforestaction}prestashop>reforestaction_3456bc0d8e32443f9983b0e3215fee49'] = 'Cosmétiques';
 $_MODULE['<{reforestaction}prestashop>reforestaction_e5990c8ef19e6e6e63190bdd98d946e1'] = 'Chaussure, accéssoires';
-_MODULE['<{reforestaction}prestashop>reforestaction_64e4aca4297806247f62a7b5f8cbd3df'] = 'Enfants';
+$_MODULE['<{reforestaction}prestashop>reforestaction_64e4aca4297806247f62a7b5f8cbd3df'] = 'Enfants';
 $_MODULE['<{reforestaction}prestashop>reforestaction_4a7f52808aa016bf90f32dfdfe13e606'] = 'Gastronomie, boissons';
 $_MODULE['<{reforestaction}prestashop>reforestaction_efe0bd2c212eceec598c42a15b8cd07f'] = 'Habillement';
 $_MODULE['<{reforestaction}prestashop>reforestaction_96faa3e6c45bb5a07bcc0bcd3be37654'] = 'Sport';
