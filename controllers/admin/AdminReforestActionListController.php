@@ -92,7 +92,7 @@ class AdminReforestActionListController extends ModuleAdminController
 		parent::initToolbar();
 
 		if (version_compare(_PS_VERSION_, '1.6', '<'))
-			$this->addCss($this->module->getPathUri().'css/configure.css');
+			$this->addCss($this->module->getPathUri().'views/css/configure.css');
 
 		$this->toolbar_btn = array(
 			'configure' => array(

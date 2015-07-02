@@ -1,0 +1,139 @@
+#reforestaction_table .checkbox.newsletter {
+    display: none;
+    clear: both;
+    margin-top: 3px;
+}
+
+.ra_title {
+    font-weight: bold;
+    color: #333333;
+    padding-bottom: 5px;
+}
+
+#reforestaction_table {
+    border: 1px solid #BDC2C9;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#reforestaction_table .loader_ajax {
+    display: none;
+    background: url('../img/loader.gif') center center no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
+#reforestaction_table:not(.ps15) td {
+    border: 1px solid #BDC2C9;
+}
+
+#reforestaction_table.ps15 td {
+    padding: 5px;
+}
+
+#reforestaction_table.ps15 td input, #reforestaction_table.ps15 td label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#reforestaction_table td p {
+    padding-bottom: 5px;
+}
+
+#reforestaction_table td:first-child {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#reforestaction_table td img {
+    height: 40px;
+}
+
+#reforestaction_table .reforestaction_content {
+    text-align: left;
+}
+
+#reforestaction_table #uniform-reforestaction_checkbox {
+    margin: 0 auto;
+}
+
+#reforestaction_table .open_popin {
+    text-decoration: underline;
+}
+
+#popin {
+    display: none;
+}
+
+#popin .cadre {
+    position: relative;
+    max-width: 650px;
+    height: 100%;
+    margin: 0 auto;
+    box-shadow: 0 5px 10px #000;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#popin .content {
+    height: 100%;
+    overflow: visible;
+    background: #f9f9f9;
+    color: #444;
+    text-shadow: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 15px;
+    overflow-x: scroll;
+}
+
+#popin .center {
+    width: 500px;
+}
+
+#popin .popin-logo {
+    border-width: 0px;
+    border-style: solid;
+    margin: 5px;
+    width: 250px;
+    height: 100px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#popin .popin-logo-2 {
+    border-width: 0px;
+    border-style: solid;
+    margin: 5px;
+    float: left;
+    width: 150px;
+    height: 200px;
+}
+
+#popin p.p2 {
+    margin: 0.0px 0.0px 15.0px 0.0px;
+    font: 12.0px helvetica;
+}
+
+.open-popin {
+    cursor: pointer;
+}
+
+
+/*.close-popin {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 10010;
+  background: url(../img/sprite-popin.png) no-repeat;
+}*/
+
+body.popin-active {
+    overflow: hidden !important;
+}

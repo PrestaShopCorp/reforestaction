@@ -22,7 +22,7 @@ $_MODULE['<{reforestaction}prestashop>reforestaction_1da3b72fcb7051c62e0ec4931dd
 $_MODULE['<{reforestaction}prestashop>reforestaction_a026149882c955b32d04ba9438875732'] = 'Maison, décoration';
 $_MODULE['<{reforestaction}prestashop>reforestaction_3456bc0d8e32443f9983b0e3215fee49'] = 'Cosmétiques';
 $_MODULE['<{reforestaction}prestashop>reforestaction_e5990c8ef19e6e6e63190bdd98d946e1'] = 'Chaussure, accéssoires';
-$_MODULE['<{reforestaction}prestashop>reforestaction_2faf27eb519570d498ac5f0b9672cd96'] = 'Enfants';
+$_MODULE['<{reforestaction}prestashop>reforestaction_64e4aca4297806247f62a7b5f8cbd3df'] = 'Enfants';
 $_MODULE['<{reforestaction}prestashop>reforestaction_4a7f52808aa016bf90f32dfdfe13e606'] = 'Gastronomie, boissons';
 $_MODULE['<{reforestaction}prestashop>reforestaction_efe0bd2c212eceec598c42a15b8cd07f'] = 'Habillement';
 $_MODULE['<{reforestaction}prestashop>reforestaction_96faa3e6c45bb5a07bcc0bcd3be37654'] = 'Sport';
@@ -99,12 +99,18 @@ $_MODULE['<{reforestaction}prestashop>before-carrier_f990e553cdc4c29c2efffba33e0
 $_MODULE['<{reforestaction}prestashop>before-carrier_5622387d1108ce77e8c190748184c6bc'] = 'Recevoir la newsletter mensuelle de Reforest\'Action pour avoir des nouvelles de mon arbre';
 $_MODULE['<{reforestaction}prestashop>before-carrier_e2e79605fc9450ec17957cf0e910f5c6'] = 'TTC';
 $_MODULE['<{reforestaction}prestashop>before-carrier_887ee91702c962a70b87cbef07bbcaec'] = 'HT';
+$_MODULE['<{reforestaction}prestashop>before-carrier_3dd42bfc8345e82c43b4a40a3426ec49'] = 'Référence :';
+$_MODULE['<{reforestaction}prestashop>before-carrier_6a2441f45ef2ed7edaf66b101d65311d'] = 'En souscrivant à l\'Achat Responsable de Reforest’Action, vous plantez un arbre sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.';
+$_MODULE['<{reforestaction}prestashop>before-carrier_b8c16d04c462121c093c4db732a6d8af'] = 'Un arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.';
+$_MODULE['<{reforestaction}prestashop>before-carrier_834dd198914def56da394ee42986546f'] = 'Suite à votre achat, vous recevrez par email un certificat de plantation attestant que votre arbre est bien planté par Reforest\'Action.';
 $_MODULE['<{reforestaction}prestashop>presentation_29813e0029dfe072a3300cfa26f9eeab'] = 'Reforest\'Action';
 $_MODULE['<{reforestaction}prestashop>presentation_1b9e8a6b42beead0afcc03d74fa7e4a6'] = 'Attirez de nouveaux prospects via les réseaux sociaux :';
 $_MODULE['<{reforestaction}prestashop>presentation_9221e349f6f9f195269180fa18314f0d'] = 'Vos clients informent leurs amis sur Facebook et Twitter qu’ils ont planté un arbre grâce à vous.';
 $_MODULE['<{reforestaction}prestashop>presentation_c9cd808f7207e171105bab54995ceee4'] = 'Une meilleure image de votre site internet :';
 $_MODULE['<{reforestaction}prestashop>presentation_deeb46ed4ee9f5ff22d4a05a8a5bd4eb'] = 'Près de deux tiers des consommateurs disent avoir un « sentiment de fierté quand ils achètent un produit bon pour l’environnement ou socialement responsable ». ';
 $_MODULE['<{reforestaction}prestashop>presentation_1e8f4ad8071166663840304eeedd6c91'] = 'Aucun frais, une installation en quelques clics.';
+$_MODULE['<{reforestaction}prestashop>presentation_c7bc3fddddb62d5b656adc30cea77a55'] = 'Présentation';
+$_MODULE['<{reforestaction}prestashop>presentation_970cfba66b8380fb97b742e4571356c6'] = 'Youtube';
 $_MODULE['<{reforestaction}prestashop>presentation_18da0e4e7a934b4dfd3e2e44120ca196'] = 'Installation du module : 5 minutes montre en main';
 $_MODULE['<{reforestaction}prestashop>presentation_d45996dbf426abe134632f68a4d7d1fd'] = '1 – Complétez le formulaire ci-dessous ';
 $_MODULE['<{reforestaction}prestashop>presentation_5b4f1e768ba513e4bd98ec18f3389bb2'] = '2 – Complétez le mandat de prélèvement Slimpay';
