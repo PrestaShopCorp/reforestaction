@@ -99,10 +99,10 @@ $_MODULE['<{reforestaction}prestashop>before-carrier_f990e553cdc4c29c2efffba33e0
 $_MODULE['<{reforestaction}prestashop>before-carrier_5622387d1108ce77e8c190748184c6bc'] = 'Recevoir la newsletter mensuelle de Reforest\'Action pour avoir des nouvelles de mon arbre';
 $_MODULE['<{reforestaction}prestashop>before-carrier_e2e79605fc9450ec17957cf0e910f5c6'] = 'TTC';
 $_MODULE['<{reforestaction}prestashop>before-carrier_887ee91702c962a70b87cbef07bbcaec'] = 'HT';
-$_MODULE['<{reforestaction}prestashop>before-carrier_3dd42bfc8345e82c43b4a40a3426ec49'] = 'Référence :';
-$_MODULE['<{reforestaction}prestashop>before-carrier_6a2441f45ef2ed7edaf66b101d65311d'] = 'En souscrivant à l\'Achat Responsable de Reforest’Action, vous plantez un arbre sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.';
+$_MODULE['<{reforestaction}prestashop>before-carrier_bf9a9b47c22c8ae22cd0ac0a209dd6f0'] = 'En souscrivant à l’Achat Responsable de Reforest’Action, vous plantez un arbre sur un de nos projets de reforestation pour compenser les émissions de CO2 de votre achat sur ce site Internet.';
 $_MODULE['<{reforestaction}prestashop>before-carrier_b8c16d04c462121c093c4db732a6d8af'] = 'Un arbre stocke en moyenne 150 kg de CO2 pendant ses 30 premières années de vie, soit plus que les émissions de C02 issues de la fabrication de la plupart des produits achetés sur Internet.';
-$_MODULE['<{reforestaction}prestashop>before-carrier_834dd198914def56da394ee42986546f'] = 'Suite à votre achat, vous recevrez par email un certificat de plantation attestant que votre arbre est bien planté par Reforest\'Action.';
+$_MODULE['<{reforestaction}prestashop>before-carrier_6ebfd77cf6c1240cef49c6639f670fe7'] = 'Suite à votre achat, vous recevrez par email un certificat de plantation attestant que votre arbre est bien planté par Reforest\'Action';
+$_MODULE['<{reforestaction}prestashop>before-carrier_3dd42bfc8345e82c43b4a40a3426ec49'] = 'Référence :';
 $_MODULE['<{reforestaction}prestashop>presentation_29813e0029dfe072a3300cfa26f9eeab'] = 'Reforest\'Action';
 $_MODULE['<{reforestaction}prestashop>presentation_1b9e8a6b42beead0afcc03d74fa7e4a6'] = 'Attirez de nouveaux prospects via les réseaux sociaux :';
 $_MODULE['<{reforestaction}prestashop>presentation_9221e349f6f9f195269180fa18314f0d'] = 'Vos clients informent leurs amis sur Facebook et Twitter qu’ils ont planté un arbre grâce à vous.';

@@ -81,6 +81,9 @@ function reforestActionCall(el, redirect, del)
 						});
 						$(window).scrollTo($('.cart_quantity_delete[id^='+id_reforestaction+'_0_0]').parents('tr').prev('tr'));
 						$('.cart_quantity_delete[id^='+id_reforestaction+'_0_0]').click();
+						
+						window.location.reload();
+						return;
 					}
 					else
 					{
